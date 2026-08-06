@@ -12,10 +12,10 @@ from config import (
     MODEL_FILE,
     SCALER_FILE,
     FEATURE_COLUMNS,
+    EXCELLENT_MATCH,
     STRONG_MATCH,
     MODERATE_MATCH,
 )
-
 from feature_engineering import generate_features
 
 # ==========================================================
@@ -88,7 +88,6 @@ def predict_resume_score(
         columns=FEATURE_COLUMNS
 
     )
-
     X_scaled = scaler.transform(X)
 
     score = float(model.predict(X_scaled)[0])
@@ -101,7 +100,11 @@ def predict_resume_score(
     # Recommendation
     # ---------------------------------------
 
-    if percentage >= STRONG_MATCH:
+    if percentage >= EXCELLENT_MATCH:
+
+        recommendation = "🌟 Excellent Match"
+
+    elif percentage >= STRONG_MATCH:
 
         recommendation = "🟢 Strong Match"
 

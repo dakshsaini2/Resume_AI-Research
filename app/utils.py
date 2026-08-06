@@ -327,7 +327,7 @@ def extract_degree(text):
 
             return DEGREE_MAP[degree]
 
-    return "unknown"
+    return "Not SPECIFIED"
 # ==========================================================
 # CERTIFICATION EXTRACTION
 # ==========================================================
