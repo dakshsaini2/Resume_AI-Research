@@ -3,15 +3,22 @@ dashboard.py
 
 Professional ATS Dashboard
 """
-from report import generate_pdf
+
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 
 from charts import score_gauge
-from components import apple_card, skill_chip
+from components import apple_card
+from dashboard_skills import skills_section
+from report import generate_pdf
+
 
 def show_dashboard(result):
+
+    # =====================================================
+    # EXTRACT RESULT
+    # =====================================================
 
     score = result["score"]
     recommendation = result["recommendation"]
@@ -34,77 +41,96 @@ def show_dashboard(result):
     required_certifications = result["required_certifications"]
 
     # =====================================================
-    # SCORE
+    # ATS SCORE
     # =====================================================
 
     st.divider()
 
-    st.subheader("🎯 Resume Match Result")
+    st.subheader("🎯 ATS Resume Match")
 
-    left, right = st.columns([1.2, 1])
+    left, right = st.columns([1.7, 1])
 
     with left:
         score_gauge(score)
 
     with right:
 
-        apple_card("🏆 Recommendation", recommendation)
+        with st.container(border=True):
+            apple_card(
+                "🏆 Recruiter Verdict",
+                recommendation
+            )
 
-        apple_card("✅ Matched Skills", len(matched_skills))
+        st.write("")
 
-        apple_card("🛠 Required Skills", len(required_skills))
+        with st.container(border=True):
+            apple_card(
+                "✅ Matched Skills",
+                len(matched_skills)
+            )
+
+        st.write("")
+
+        with st.container(border=True):
+            apple_card(
+                "📋 Required Skills",
+                len(required_skills)
+            )
 
     # =====================================================
-    # SUMMARY
+    # CANDIDATE OVERVIEW
     # =====================================================
 
     st.divider()
 
-    st.subheader("👤 Candidate Summary")
+    st.subheader("👤 Candidate Overview")
 
     c1, c2, c3, c4 = st.columns(4)
 
-    c1.metric("🎓 Degree", candidate_degree.upper())
+    with c1:
 
-    c2.metric("💼 Experience", f"{candidate_experience} Years")
+        with st.container(border=True):
 
-    c3.metric("🛠 Skills", len(candidate_skills))
+            st.metric(
+                "🎓 Degree",
+                candidate_degree.upper()
+            )
 
-    c4.metric("📜 Certificates", len(candidate_certifications))
+    with c2:
+
+        with st.container(border=True):
+
+            st.metric(
+                "💼 Experience",
+                f"{candidate_experience} Years"
+            )
+
+    with c3:
+
+        with st.container(border=True):
+
+            st.metric(
+                "🛠 Skills",
+                len(candidate_skills)
+            )
+
+    with c4:
+
+        with st.container(border=True):
+
+            st.metric(
+                "📜 Certificates",
+                len(candidate_certifications)
+            )
 
     # =====================================================
     # SKILLS
     # =====================================================
 
-    st.divider()
-
-    left, right = st.columns(2)
-
-    with left:
-
-        st.subheader("✅ Matched Skills")
-
-        if matched_skills:
-
-            for skill in matched_skills:
-                skill_chip(skill, True)
-
-        else:
-
-            st.warning("No matching skills found.")
-
-    with right:
-
-        st.subheader("❌ Missing Skills")
-
-        if missing_skills:
-
-            for skill in missing_skills:
-                skill_chip(skill, False)
-
-        else:
-
-            st.success("No missing skills 🎉")
+    skills_section(
+        matched_skills,
+        missing_skills
+    )
 
     # =====================================================
     # EDUCATION
@@ -112,113 +138,270 @@ def show_dashboard(result):
 
     st.divider()
 
-    c1, c2, c3 = st.columns(3)
+    st.subheader("🎓 Qualification Analysis")
 
-    with c1:
+    col1, col2, col3 = st.columns(3)
 
-        st.subheader("🎓 Education")
+    with col1:
 
-        st.write(f"Candidate : **{candidate_degree.upper()}**")
+        with st.container(border=True):
 
-        st.write(f"Required : **{required_degree.upper()}**")
+            st.markdown("### 🎓 Education")
 
-    with c2:
+            st.write(
+                f"**Candidate:** {candidate_degree.upper()}"
+            )
 
-        st.subheader("💼 Experience")
+            st.write(
+                f"**Required:** {required_degree.upper()}"
+            )
 
-        st.write(f"Candidate : **{candidate_experience} Years**")
+    with col2:
 
-        st.write(f"Required : **{required_experience} Years**")
+        with st.container(border=True):
 
-    with c3:
+            st.markdown("### 💼 Experience")
 
-        st.subheader("📜 Certifications")
+            st.write(
+                f"**Candidate:** {candidate_experience} Years"
+            )
 
-        st.write("Candidate:")
+            st.write(
+                f"**Required:** {required_experience} Years"
+            )
 
-        if candidate_certifications:
-            st.write(", ".join(candidate_certifications))
-        else:
-            st.write("None")
+    with col3:
 
-        st.write("Required:")
+        with st.container(border=True):
 
-        if required_certifications:
-            st.write(", ".join(required_certifications))
-        else:
-            st.write("None")
+            st.markdown("### 📜 Certifications")
 
+            st.write("**Candidate**")
+
+            if candidate_certifications:
+
+                st.write(
+                    ", ".join(candidate_certifications)
+                )
+
+            else:
+
+                st.write("None")
+
+            st.write("")
+
+            st.write("**Required**")
+
+            if required_certifications:
+
+                st.write(
+                    ", ".join(required_certifications)
+                )
+
+            else:
+
+                st.write("None")
     # =====================================================
-    # FEATURE CHART
+    # FEATURE IMPORTANCE
     # =====================================================
 
     st.divider()
 
-    st.subheader("📊 Feature Importance")
+    st.subheader("📊 Resume Analytics")
 
     feature_df = pd.DataFrame({
-
         "Feature": list(features.keys()),
-
         "Value": list(features.values())
-
     })
 
+    # Make feature names recruiter-friendly
+    feature_names = {
+        "resume_length": "📄 Resume Length",
+        "job_length": "📑 Job Description Length",
+        "semantic_similarity": "🧠 Semantic Similarity",
+        "tfidf_similarity": "📝 TF-IDF Similarity",
+        "skill_match": "🛠 Skill Match",
+        "education_match": "🎓 Education Match",
+        "experience_match": "💼 Experience Match",
+        "certification_match": "📜 Certification Match",
+        "matched_skills": "✅ Matched Skills",
+        "missing_skills": "❌ Missing Skills",
+    }
+
+    feature_df["Feature"] = feature_df["Feature"].replace(feature_names)
+
+    # Keep numeric values only
+    feature_df = feature_df[
+        pd.to_numeric(feature_df["Value"], errors="coerce").notnull()
+    ]
+
+    feature_df["Value"] = feature_df["Value"].astype(float)
+
+    max_value = feature_df["Value"].max()
+
+    if max_value > 0:
+        feature_df["Importance"] = (
+            feature_df["Value"] / max_value
+        ) * 100
+    else:
+        feature_df["Importance"] = 0
+
+    feature_df = feature_df.sort_values(
+        by="Importance",
+        ascending=True
+    )
+
     fig = px.bar(
-
         feature_df,
-
-        x="Value",
-
+        x="Importance",
         y="Feature",
-
         orientation="h",
-
-        color="Value",
-
+        text="Importance",
+        color="Importance",
         color_continuous_scale="Blues"
+    )
 
+    fig.update_traces(
+        texttemplate="%{x:.0f}%",
+        textposition="outside",
+        cliponaxis=False
     )
 
     fig.update_layout(
 
         paper_bgcolor="#F5F5F7",
-
         plot_bgcolor="white",
 
-        height=500
+        height=550,
+
+        font=dict(
+            color="#1D1D1F",
+            size=14
+        ),
+
+        coloraxis_showscale=False,
+
+        margin=dict(
+            l=220,
+            r=40,
+            t=20,
+            b=20
+        ),
+
+        xaxis=dict(
+            title="Relative Importance",
+            showgrid=True,
+            gridcolor="#E5E5EA",
+            zeroline=False
+        ),
+
+        yaxis=dict(
+            title=""
+        )
 
     )
 
     st.plotly_chart(
-
         fig,
-
-        use_container_width=True
-
+        use_container_width=True,
+        config={
+            "displaylogo": False
+        }
     )
 
-      # =========================
-    # ADVANCED FEATURES
-    # =========================
+    # =====================================================
+    # AI SUGGESTIONS
+    # =====================================================
 
-    with st.expander("🔍 Advanced Feature Values"):
+    st.divider()
+
+    st.subheader("💡 AI Resume Suggestions")
+
+    with st.container(border=True):
+
+        if missing_skills:
+
+            st.success(
+                "Here are some improvements to increase your ATS score:"
+            )
+
+            for skill in missing_skills[:6]:
+
+                st.write(f"✅ Learn **{skill}**")
+
+        else:
+
+            st.success(
+                "Excellent! No major skill gaps detected."
+            )
+
+        if candidate_experience < required_experience:
+
+            st.write(
+                "💼 Gain more relevant project or internship experience."
+            )
+
+        if candidate_certifications == []:
+
+            st.write(
+                "📜 Add industry-recognized certifications."
+            )
+
+        st.write(
+            "📄 Keep your resume to 1–2 pages."
+        )
+
+        st.write(
+            "🔗 Add GitHub and LinkedIn profile links."
+        )
+
+    # =====================================================
+    # ADVANCED FEATURES
+    # =====================================================
+
+    st.divider()
+
+    with st.expander("🔍 View Raw Feature Values"):
+
+        st.dataframe(
+            feature_df,
+            use_container_width=True
+        )
+
         st.json(features)
 
-    # =========================
+    # =====================================================
     # PDF REPORT
-    # =========================
+    # =====================================================
 
-    st.markdown("---")
-    st.markdown("## 📄 ATS Report")
+    st.divider()
+
+    st.subheader("📄 ATS Report")
 
     pdf_file = generate_pdf(result)
 
-    with open(pdf_file, "rb") as f:
+    with open(pdf_file, "rb") as file:
+
         st.download_button(
-            label="📄 Download ATS PDF Report",
-            data=f,
+
+            label="📄 Download Professional ATS Report",
+
+            data=file,
+
             file_name="ATS_Report.pdf",
+
             mime="application/pdf",
-            use_container_width=True,
+
+            use_container_width=True
+
         )
+
+    # =====================================================
+    # FOOTER
+    # =====================================================
+
+    st.divider()
+
+    st.caption(
+        "🍎 AI Resume Screening System • Developed by Daksh Saini"
+    )

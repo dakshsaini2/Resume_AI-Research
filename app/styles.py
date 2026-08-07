@@ -101,6 +101,19 @@ label {
         0 8px 25px rgba(0,0,0,.08);
 
 }
+.js-plotly-plot text,
+.js-plotly-plot .xtick text,
+.js-plotly-plot .ytick text {
+
+    fill: #1D1D1F !important;
+
+}
+
+.js-plotly-plot .gtitle {
+
+    fill:#1D1D1F !important;
+
+}
 
 /* Button */
 
@@ -226,6 +239,22 @@ label {
     color:#8E8E93 !important;
 
 }
+/* Modern Cards */
+
+[data-testid="stVerticalBlockBorderWrapper"]{
+
+    background:white;
+
+    border-radius:18px;
+
+    border:1px solid #E5E5EA;
+
+    padding:20px;
+
+    box-shadow:0 6px 20px rgba(0,0,0,.05);
+
+}
+
 
 [data-testid="stTextArea"] textarea:focus{
 
@@ -236,33 +265,30 @@ label {
 }
 
 /* ==========================================
-   FILE UPLOADER
+   FILE UPLOADER BUTTON
 ========================================== */
 
-[data-testid="stFileUploader"]{
+[data-testid="stFileUploader"] button{
 
-    background:#FFFFFF !important;
+    background:#007AFF !important;
 
-    border:2px dashed #007AFF !important;
-
-    border-radius:18px !important;
-
-    padding:18px !important;
-
-}
-
-[data-testid="stFileUploaderDropzone"]{
-
-    background:#FFFFFF !important;
+    color:white !important;
 
     border:none !important;
 
+    border-radius:12px !important;
+
+    font-weight:600 !important;
+
+    padding:10px 20px !important;
+
 }
 
-[data-testid="stFileUploader"] small{
+[data-testid="stFileUploader"] button:hover{
 
-    color:#6E6E73 !important;
+    background:#0063D1 !important;
 
+}
 }
 
 /* ==========================================
@@ -275,6 +301,24 @@ label {
     color:#1D1D1F !important;
 
     font-weight:600 !important;
+
+}
+
+/* New Streamlit uploader button */
+
+[data-testid="baseButton-secondary"]{
+
+    background:#007AFF !important;
+
+    color:white !important;
+
+    border:none !important;
+
+}
+
+[data-testid="baseButton-secondary"]:hover{
+
+    background:#0063D1 !important;
 
 }
 
