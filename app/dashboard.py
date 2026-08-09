@@ -773,7 +773,7 @@ def show_dashboard(result):
             "`feature_importances_`."
         )
 
-    # ======================================================
+        # ======================================================
     # AI SUGGESTIONS
     # ======================================================
 
@@ -783,19 +783,16 @@ def show_dashboard(result):
 
     with st.container(border=True):
 
-        suggestions_added = False
+        specific_suggestion = False
 
         # --------------------------------------------------
-        # Missing skills
+        # MISSING SKILLS
         # --------------------------------------------------
 
         if missing_skills:
 
-            suggestions_added = True
-
-            st.info(
-                "Here are some improvements that may "
-                "increase your job match:"
+            st.success(
+                "Here are some improvements to increase your ATS score:"
             )
 
             for skill in missing_skills[:6]:
@@ -804,77 +801,70 @@ def show_dashboard(result):
                     f"✅ Learn **{skill}**"
                 )
 
+            specific_suggestion = True
+
         # --------------------------------------------------
-        # Experience
+        # EXPERIENCE
+        # --------------------------------------------------
+
+        if candidate_experience < required_experience:
+
+            st.write(
+                "💼 Gain more relevant project, internship, "
+                "or professional experience."
+            )
+
+            specific_suggestion = True
+
+        # --------------------------------------------------
+        # CERTIFICATIONS
         # --------------------------------------------------
 
         if (
-            required_experience > 0
-            and
-            candidate_experience < required_experience
+            not candidate_certifications
+            and required_certifications
         ):
 
-            suggestions_added = True
-
             st.write(
-                "💼 Gain more relevant project, "
-                "internship, or professional experience."
+                "📜 Consider adding relevant industry-recognized "
+                "certifications."
             )
 
-        # --------------------------------------------------
-        # Certification
-        # --------------------------------------------------
-
-        if (
-            required_certifications
-            and
-            certification_match_score < 1
-        ):
-
-            suggestions_added = True
-
-            st.write(
-                "📜 Consider obtaining the required "
-                "industry certifications."
-            )
+            specific_suggestion = True
 
         # --------------------------------------------------
-        # Generic suggestions
+        # GENERAL SUGGESTIONS
         # --------------------------------------------------
 
         st.write(
-            "📄 Keep your resume concise and focused "
-            "on the target role."
+            "📄 Keep the resume concise and preferably within 1–2 pages."
         )
 
         st.write(
-            "🔗 Add GitHub, LinkedIn, and portfolio "
-            "links when applicable."
+            "🔗 Include GitHub and LinkedIn profile links."
         )
 
-        if not suggestions_added:
+        # --------------------------------------------------
+        # NO SPECIFIC GAPS
+        # --------------------------------------------------
+
+        if not specific_suggestion:
 
             st.success(
-                "🎉 Excellent profile. No major "
-                "improvements detected."
+                "Excellent! No major improvement gaps detected."
             )
 
-    # ======================================================
+        # ======================================================
     # ADVANCED FEATURES
     # ======================================================
 
     st.divider()
 
-    with st.expander(
-        "🔍 View Raw Feature Values"
-    ):
+    with st.expander("🔍 View Raw Feature Values"):
 
         raw_feature_df = pd.DataFrame({
-
             "Feature": list(features.keys()),
-
             "Value": list(features.values())
-
         })
 
         st.dataframe(
@@ -882,8 +872,7 @@ def show_dashboard(result):
             use_container_width=True,
             hide_index=True
         )
-
-    # ======================================================
+        # ======================================================
     # PDF REPORT
     # ======================================================
 
@@ -896,26 +885,9 @@ def show_dashboard(result):
     with open(pdf_file, "rb") as file:
 
         st.download_button(
-
             label="📄 Download Professional ATS Report",
-
             data=file,
-
             file_name="ATS_Report.pdf",
-
             mime="application/pdf",
-
             use_container_width=True
-
         )
-
-    # ======================================================
-    # FOOTER
-    # ======================================================
-
-    st.divider()
-
-    st.caption(
-        "🍎 AI Resume Screening System • "
-        "Developed by Daksh Saini"
-    )

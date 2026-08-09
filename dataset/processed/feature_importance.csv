@@ -1,0 +1,15 @@
+Feature,Importance
+tfidf_similarity,0.16500535809838413
+job_length,0.156163956926769
+semantic_similarity,0.1332913919559569
+resume_length,0.12061955303565712
+candidate_skill_count,0.10138067589903409
+required_skill_count,0.09445974682486834
+resume_word_count,0.07712060843928019
+job_word_count,0.07144079499234764
+skill_match_score,0.042137113054415504
+education_match_score,0.015029099195257429
+certification_match_score,0.012907797471506614
+education_exact_match,0.00657182093418563
+experience_match_score,0.002980711773765599
+skill_overlap_count,0.0008913713985720884
