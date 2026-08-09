@@ -170,15 +170,15 @@ def generate_features(
     )
 
     education_exact_match = int(
-
-        candidate_degree ==
-        required_degree
-
+        candidate_degree.strip().lower()
+        ==
+        required_degree.strip().lower()
     )
 
-    education_match_score = (
+    education_match_score = float(
         education_exact_match
     )
+
 
     # ---------------------------------------
     # EXPERIENCE
@@ -192,19 +192,19 @@ def generate_features(
         job_text
     )
 
-    if required_exp == 0:
+    if required_exp <= 0:
 
-        experience_match_score = 1
+        experience_match_score = 1.0
+
+    elif candidate_exp <= 0:
+
+        experience_match_score = 0.0
 
     else:
 
         experience_match_score = min(
-
-            candidate_exp /
-            required_exp,
-
-            1
-
+            candidate_exp / required_exp,
+            1.0
         )
 
             # ---------------------------------------

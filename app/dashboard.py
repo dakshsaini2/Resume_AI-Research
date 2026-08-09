@@ -7,18 +7,32 @@ Professional ATS Dashboard
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import joblib
 
 from charts import score_gauge
 from components import apple_card
 from dashboard_skills import skills_section
 from report import generate_pdf
 
+from config import MODEL_FILE, FEATURE_COLUMNS
+
+
+# ==========================================================
+# LOAD TRAINED MODEL
+# ==========================================================
+
+model = joblib.load(MODEL_FILE)
+
+
+# ==========================================================
+# SHOW DASHBOARD
+# ==========================================================
 
 def show_dashboard(result):
 
-    # =====================================================
+    # ======================================================
     # EXTRACT RESULT
-    # =====================================================
+    # ======================================================
 
     score = result["score"]
     recommendation = result["recommendation"]
@@ -37,12 +51,68 @@ def show_dashboard(result):
     candidate_experience = result["candidate_experience"]
     required_experience = result["required_experience"]
 
-    candidate_certifications = result["candidate_certifications"]
-    required_certifications = result["required_certifications"]
+    candidate_certifications = (
+        result["candidate_certifications"]
+    )
 
-    # =====================================================
+    required_certifications = (
+        result["required_certifications"]
+    )
+
+    # Optional values returned by the updated predictor
+    skill_match_score = result.get(
+        "skill_match_score",
+        features.get("skill_match_score", 0)
+    )
+
+    education_match_score = result.get(
+        "education_match_score",
+        features.get("education_match_score", 0)
+    )
+
+    experience_match_score = result.get(
+        "experience_match_score",
+        features.get("experience_match_score", 0)
+    )
+
+    certification_match_score = result.get(
+        "certification_match_score",
+        features.get("certification_match_score", 0)
+    )
+
+    tfidf_similarity = result.get(
+        "tfidf_similarity",
+        features.get("tfidf_similarity", 0)
+    )
+
+    semantic_similarity = result.get(
+        "semantic_similarity",
+        features.get("semantic_similarity", 0)
+    )
+
+    experience_status = result.get(
+        "experience_status",
+        "Not Available"
+    )
+
+    education_status = result.get(
+        "education_status",
+        "Not Available"
+    )
+
+    certification_status = result.get(
+        "certification_status",
+        "Not Available"
+    )
+
+    skill_status = result.get(
+        "skill_status",
+        "Not Available"
+    )
+
+    # ======================================================
     # ATS SCORE
-    # =====================================================
+    # ======================================================
 
     st.divider()
 
@@ -50,12 +120,24 @@ def show_dashboard(result):
 
     left, right = st.columns([1.7, 1])
 
+    # ------------------------------------------------------
+    # SCORE GAUGE
+    # ------------------------------------------------------
+
     with left:
-        score_gauge(score)
+
+        with st.container(border=True):
+
+            score_gauge(score)
+
+    # ------------------------------------------------------
+    # VERDICT CARDS
+    # ------------------------------------------------------
 
     with right:
 
         with st.container(border=True):
+
             apple_card(
                 "🏆 Recruiter Verdict",
                 recommendation
@@ -64,6 +146,7 @@ def show_dashboard(result):
         st.write("")
 
         with st.container(border=True):
+
             apple_card(
                 "✅ Matched Skills",
                 len(matched_skills)
@@ -72,14 +155,15 @@ def show_dashboard(result):
         st.write("")
 
         with st.container(border=True):
+
             apple_card(
                 "📋 Required Skills",
                 len(required_skills)
             )
 
-    # =====================================================
+    # ======================================================
     # CANDIDATE OVERVIEW
-    # =====================================================
+    # ======================================================
 
     st.divider()
 
@@ -123,24 +207,28 @@ def show_dashboard(result):
                 len(candidate_certifications)
             )
 
-    # =====================================================
+    # ======================================================
     # SKILLS
-    # =====================================================
+    # ======================================================
 
     skills_section(
         matched_skills,
         missing_skills
     )
 
-    # =====================================================
-    # EDUCATION
-    # =====================================================
+    # ======================================================
+    # QUALIFICATION ANALYSIS
+    # ======================================================
 
     st.divider()
 
     st.subheader("🎓 Qualification Analysis")
 
     col1, col2, col3 = st.columns(3)
+
+    # ------------------------------------------------------
+    # EDUCATION
+    # ------------------------------------------------------
 
     with col1:
 
@@ -149,12 +237,32 @@ def show_dashboard(result):
             st.markdown("### 🎓 Education")
 
             st.write(
-                f"**Candidate:** {candidate_degree.upper()}"
+                f"**Candidate:** "
+                f"{candidate_degree.upper()}"
             )
 
             st.write(
-                f"**Required:** {required_degree.upper()}"
+                f"**Required:** "
+                f"{required_degree.upper()}"
             )
+
+            st.divider()
+
+            if education_match_score >= 1:
+
+                st.success(
+                    "✅ Education requirement satisfied"
+                )
+
+            else:
+
+                st.error(
+                    "❌ Education requirement not satisfied"
+                )
+
+    # ------------------------------------------------------
+    # EXPERIENCE
+    # ------------------------------------------------------
 
     with col2:
 
@@ -163,12 +271,38 @@ def show_dashboard(result):
             st.markdown("### 💼 Experience")
 
             st.write(
-                f"**Candidate:** {candidate_experience} Years"
+                f"**Candidate:** "
+                f"{candidate_experience} Years"
             )
 
             st.write(
-                f"**Required:** {required_experience} Years"
+                f"**Required:** "
+                f"{required_experience} Years"
             )
+
+            st.divider()
+
+            if required_experience <= 0:
+
+                st.info(
+                    "ℹ️ Experience not specified"
+                )
+
+            elif candidate_experience >= required_experience:
+
+                st.success(
+                    "✅ Experience requirement satisfied"
+                )
+
+            else:
+
+                st.error(
+                    "❌ Experience requirement not satisfied"
+                )
+
+    # ------------------------------------------------------
+    # CERTIFICATIONS
+    # ------------------------------------------------------
 
     with col3:
 
@@ -176,7 +310,7 @@ def show_dashboard(result):
 
             st.markdown("### 📜 Certifications")
 
-            st.write("**Candidate**")
+            st.write("**Candidate:**")
 
             if candidate_certifications:
 
@@ -188,9 +322,7 @@ def show_dashboard(result):
 
                 st.write("None")
 
-            st.write("")
-
-            st.write("**Required**")
+            st.write("**Required:**")
 
             if required_certifications:
 
@@ -201,117 +333,449 @@ def show_dashboard(result):
             else:
 
                 st.write("None")
-    # =====================================================
-    # FEATURE IMPORTANCE
-    # =====================================================
+
+            st.divider()
+
+            if certification_match_score >= 1:
+
+                st.success(
+                    "✅ Certification requirement satisfied"
+                )
+
+            elif certification_match_score > 0:
+
+                st.warning(
+                    "⚠️ Partial certification match"
+                )
+
+            else:
+
+                if required_certifications:
+
+                    st.error(
+                        "❌ Required certifications missing"
+                    )
+
+                else:
+
+                    st.info(
+                        "ℹ️ Certifications not required"
+                    )
+
+    # ======================================================
+    # MATCH QUALITY ANALYSIS
+    # ======================================================
 
     st.divider()
 
-    st.subheader("📊 Resume Analytics")
+    st.subheader("🔍 Match Quality Analysis")
 
-    feature_df = pd.DataFrame({
-        "Feature": list(features.keys()),
-        "Value": list(features.values())
-    })
+    q1, q2, q3, q4, q5 = st.columns(5)
 
-    # Make feature names recruiter-friendly
-    feature_names = {
-        "resume_length": "📄 Resume Length",
-        "job_length": "📑 Job Description Length",
-        "semantic_similarity": "🧠 Semantic Similarity",
-        "tfidf_similarity": "📝 TF-IDF Similarity",
-        "skill_match": "🛠 Skill Match",
-        "education_match": "🎓 Education Match",
-        "experience_match": "💼 Experience Match",
-        "certification_match": "📜 Certification Match",
-        "matched_skills": "✅ Matched Skills",
-        "missing_skills": "❌ Missing Skills",
-    }
+    # ------------------------------------------------------
+    # SKILLS
+    # ------------------------------------------------------
 
-    feature_df["Feature"] = feature_df["Feature"].replace(feature_names)
+    with q1:
 
-    # Keep numeric values only
-    feature_df = feature_df[
-        pd.to_numeric(feature_df["Value"], errors="coerce").notnull()
-    ]
+        with st.container(border=True):
 
-    feature_df["Value"] = feature_df["Value"].astype(float)
+            st.metric(
+                "🛠 Skill Match",
+                f"{skill_match_score * 100:.0f}%"
+            )
 
-    max_value = feature_df["Value"].max()
+            if skill_status == "Strong":
 
-    if max_value > 0:
-        feature_df["Importance"] = (
-            feature_df["Value"] / max_value
-        ) * 100
+                st.success("Strong")
+
+            elif skill_status == "Moderate":
+
+                st.warning("Moderate")
+
+            else:
+
+                st.error("Weak")
+
+    # ------------------------------------------------------
+    # EDUCATION
+    # ------------------------------------------------------
+
+    with q2:
+
+        with st.container(border=True):
+
+            st.metric(
+                "🎓 Education",
+                f"{education_match_score * 100:.0f}%"
+            )
+
+            st.caption(
+                education_status
+            )
+
+    # ------------------------------------------------------
+    # EXPERIENCE
+    # ------------------------------------------------------
+
+    with q3:
+
+        with st.container(border=True):
+
+            st.metric(
+                "💼 Experience",
+                f"{experience_match_score * 100:.0f}%"
+            )
+
+            st.caption(
+                experience_status
+            )
+
+    # ------------------------------------------------------
+    # CERTIFICATION
+    # ------------------------------------------------------
+
+    with q4:
+
+        with st.container(border=True):
+
+            st.metric(
+                "📜 Certification",
+                f"{certification_match_score * 100:.0f}%"
+            )
+
+            st.caption(
+                certification_status
+            )
+
+    # ------------------------------------------------------
+    # SEMANTIC
+    # ------------------------------------------------------
+
+    with q5:
+
+        with st.container(border=True):
+
+            st.metric(
+                "🧠 Semantic Match",
+                f"{semantic_similarity * 100:.0f}%"
+            )
+
+            st.caption(
+                "Sentence-BERT"
+            )
+
+    # ======================================================
+    # NLP ANALYSIS
+    # ======================================================
+
+    st.divider()
+
+    st.subheader("🧠 NLP Similarity Analysis")
+
+    n1, n2 = st.columns(2)
+
+    with n1:
+
+        with st.container(border=True):
+
+            st.markdown("### 📝 TF-IDF Similarity")
+
+            st.progress(
+                min(
+                    max(tfidf_similarity, 0.0),
+                    1.0
+                )
+            )
+
+            st.write(
+                f"**{tfidf_similarity * 100:.2f}%**"
+            )
+
+            st.caption(
+                "Lexical similarity between the resume "
+                "and job description."
+            )
+
+    with n2:
+
+        with st.container(border=True):
+
+            st.markdown("### 🧠 Sentence-BERT Similarity")
+
+            st.progress(
+                min(
+                    max(semantic_similarity, 0.0),
+                    1.0
+                )
+            )
+
+            st.write(
+                f"**{semantic_similarity * 100:.2f}%**"
+            )
+
+            st.caption(
+                "Semantic similarity between the resume "
+                "and job description."
+            )
+
+    # ======================================================
+    # TRUE RANDOM FOREST FEATURE IMPORTANCE
+    # ======================================================
+
+    st.divider()
+
+    st.subheader("📊 Model Feature Importance")
+
+    st.caption(
+        "Importance calculated directly from the trained "
+        "Random Forest model."
+    )
+
+    # ------------------------------------------------------
+    # CHECK MODEL SUPPORT
+    # ------------------------------------------------------
+
+    if hasattr(model, "feature_importances_"):
+
+        importance_values = model.feature_importances_
+
+        # Safety check
+        if len(importance_values) == len(FEATURE_COLUMNS):
+
+            importance_df = pd.DataFrame({
+
+                "Feature": FEATURE_COLUMNS,
+
+                "Importance": importance_values
+
+            })
+
+            # ------------------------------------------------
+            # Friendly names
+            # ------------------------------------------------
+
+            feature_names = {
+
+                "tfidf_similarity":
+                    "📝 TF-IDF Similarity",
+
+                "semantic_similarity":
+                    "🧠 Semantic Similarity",
+
+                "skill_match_score":
+                    "🛠 Skill Match",
+
+                "education_match_score":
+                    "🎓 Education Match",
+
+                "experience_match_score":
+                    "💼 Experience Match",
+
+                "certification_match_score":
+                    "📜 Certification Match",
+
+                "resume_length":
+                    "📄 Resume Length",
+
+                "job_length":
+                    "📑 Job Description Length",
+
+                "resume_word_count":
+                    "📄 Resume Word Count",
+
+                "job_word_count":
+                    "📑 Job Description Word Count",
+
+                "candidate_skill_count":
+                    "🛠 Candidate Skill Count",
+
+                "required_skill_count":
+                    "📋 Required Skill Count",
+
+                "skill_overlap_count":
+                    "✅ Skill Overlap Count",
+
+                "education_exact_match":
+                    "🎓 Exact Education Match",
+            }
+
+            importance_df["Feature"] = (
+                importance_df["Feature"]
+                .map(feature_names)
+                .fillna(importance_df["Feature"])
+            )
+
+            # ------------------------------------------------
+            # Convert to percentage
+            # ------------------------------------------------
+
+            importance_df["Importance"] = (
+                importance_df["Importance"] * 100
+            )
+
+            importance_df = importance_df.sort_values(
+                by="Importance",
+                ascending=True
+            )
+
+            # ------------------------------------------------
+            # Plot
+            # ------------------------------------------------
+
+            fig = px.bar(
+
+                importance_df,
+
+                x="Importance",
+
+                y="Feature",
+
+                orientation="h",
+
+                text="Importance",
+
+                color="Importance",
+
+                color_continuous_scale="Blues"
+
+            )
+
+            fig.update_traces(
+
+                texttemplate="%{x:.1f}%",
+
+                textposition="outside",
+
+                cliponaxis=False
+
+            )
+
+            fig.update_layout(
+
+                height=600,
+
+                paper_bgcolor="#F5F5F7",
+
+                plot_bgcolor="white",
+
+                font=dict(
+
+                    color="#1D1D1F",
+
+                    size=14
+
+                ),
+
+                coloraxis_showscale=False,
+
+                margin=dict(
+
+                    l=230,
+
+                    r=70,
+
+                    t=30,
+
+                    b=50
+
+                ),
+
+                xaxis=dict(
+
+                    title="Model Importance (%)",
+
+                    range=[
+                        0,
+                        max(
+                            10,
+                            importance_df["Importance"].max()
+                            * 1.15
+                        )
+                    ],
+
+                    showgrid=True,
+
+                    gridcolor="#E5E5EA",
+
+                    zeroline=False,
+
+                    tickfont=dict(
+                        color="#1D1D1F"
+                    ),
+
+                    title_font=dict(
+                        color="#1D1D1F"
+                    )
+
+                ),
+
+                yaxis=dict(
+
+                    title="",
+
+                    tickfont=dict(
+                        color="#1D1D1F"
+                    ),
+
+                    automargin=True
+
+                )
+
+            )
+
+            st.plotly_chart(
+
+                fig,
+
+                use_container_width=True,
+
+                config={
+                    "displaylogo": False
+                }
+
+            )
+
+            # ------------------------------------------------
+            # Importance table
+            # ------------------------------------------------
+
+            with st.expander(
+                "🔍 View Model Feature Importance Values"
+            ):
+
+                display_df = importance_df.copy()
+
+                display_df["Importance"] = (
+                    display_df["Importance"]
+                    .round(2)
+                    .astype(str)
+                    + "%"
+                )
+
+                st.dataframe(
+                    display_df,
+                    use_container_width=True,
+                    hide_index=True
+                )
+
+        else:
+
+            st.warning(
+                "The number of model features does not "
+                "match FEATURE_COLUMNS."
+            )
+
     else:
-        feature_df["Importance"] = 0
 
-    feature_df = feature_df.sort_values(
-        by="Importance",
-        ascending=True
-    )
-
-    fig = px.bar(
-        feature_df,
-        x="Importance",
-        y="Feature",
-        orientation="h",
-        text="Importance",
-        color="Importance",
-        color_continuous_scale="Blues"
-    )
-
-    fig.update_traces(
-        texttemplate="%{x:.0f}%",
-        textposition="outside",
-        cliponaxis=False
-    )
-
-    fig.update_layout(
-
-        paper_bgcolor="#F5F5F7",
-        plot_bgcolor="white",
-
-        height=550,
-
-        font=dict(
-            color="#1D1D1F",
-            size=14
-        ),
-
-        coloraxis_showscale=False,
-
-        margin=dict(
-            l=220,
-            r=40,
-            t=20,
-            b=20
-        ),
-
-        xaxis=dict(
-            title="Relative Importance",
-            showgrid=True,
-            gridcolor="#E5E5EA",
-            zeroline=False
-        ),
-
-        yaxis=dict(
-            title=""
+        st.warning(
+            "The loaded model does not expose "
+            "`feature_importances_`."
         )
 
-    )
-
-    st.plotly_chart(
-        fig,
-        use_container_width=True,
-        config={
-            "displaylogo": False
-        }
-    )
-
-    # =====================================================
+    # ======================================================
     # AI SUGGESTIONS
-    # =====================================================
+    # ======================================================
 
     st.divider()
 
@@ -319,60 +783,109 @@ def show_dashboard(result):
 
     with st.container(border=True):
 
+        suggestions_added = False
+
+        # --------------------------------------------------
+        # Missing skills
+        # --------------------------------------------------
+
         if missing_skills:
 
-            st.success(
-                "Here are some improvements to increase your ATS score:"
+            suggestions_added = True
+
+            st.info(
+                "Here are some improvements that may "
+                "increase your job match:"
             )
 
             for skill in missing_skills[:6]:
 
-                st.write(f"✅ Learn **{skill}**")
+                st.write(
+                    f"✅ Learn **{skill}**"
+                )
 
-        else:
+        # --------------------------------------------------
+        # Experience
+        # --------------------------------------------------
+
+        if (
+            required_experience > 0
+            and
+            candidate_experience < required_experience
+        ):
+
+            suggestions_added = True
+
+            st.write(
+                "💼 Gain more relevant project, "
+                "internship, or professional experience."
+            )
+
+        # --------------------------------------------------
+        # Certification
+        # --------------------------------------------------
+
+        if (
+            required_certifications
+            and
+            certification_match_score < 1
+        ):
+
+            suggestions_added = True
+
+            st.write(
+                "📜 Consider obtaining the required "
+                "industry certifications."
+            )
+
+        # --------------------------------------------------
+        # Generic suggestions
+        # --------------------------------------------------
+
+        st.write(
+            "📄 Keep your resume concise and focused "
+            "on the target role."
+        )
+
+        st.write(
+            "🔗 Add GitHub, LinkedIn, and portfolio "
+            "links when applicable."
+        )
+
+        if not suggestions_added:
 
             st.success(
-                "Excellent! No major skill gaps detected."
+                "🎉 Excellent profile. No major "
+                "improvements detected."
             )
 
-        if candidate_experience < required_experience:
-
-            st.write(
-                "💼 Gain more relevant project or internship experience."
-            )
-
-        if candidate_certifications == []:
-
-            st.write(
-                "📜 Add industry-recognized certifications."
-            )
-
-        st.write(
-            "📄 Keep your resume to 1–2 pages."
-        )
-
-        st.write(
-            "🔗 Add GitHub and LinkedIn profile links."
-        )
-
-    # =====================================================
+    # ======================================================
     # ADVANCED FEATURES
-    # =====================================================
+    # ======================================================
 
     st.divider()
 
-    with st.expander("🔍 View Raw Feature Values"):
+    with st.expander(
+        "🔍 View Raw Feature Values"
+    ):
+
+        raw_feature_df = pd.DataFrame({
+
+            "Feature": list(features.keys()),
+
+            "Value": list(features.values())
+
+        })
 
         st.dataframe(
-            feature_df,
-            use_container_width=True
+            raw_feature_df,
+            use_container_width=True,
+            hide_index=True
         )
 
-        st.json(features)
-
-    # =====================================================
+    # ======================================================
     # PDF REPORT
-    # =====================================================
+    # ======================================================
 
     st.divider()
 
@@ -396,12 +909,13 @@ def show_dashboard(result):
 
         )
 
-    # =====================================================
+    # ======================================================
     # FOOTER
-    # =====================================================
+    # ======================================================
 
     st.divider()
 
     st.caption(
-        "🍎 AI Resume Screening System • Developed by Daksh Saini"
+        "🍎 AI Resume Screening System • "
+        "Developed by Daksh Saini"
     )
