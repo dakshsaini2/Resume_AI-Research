@@ -464,17 +464,43 @@ def apply_styles():
             color: #FFFFFF !important;
         }
 
-        /* Uploaded File Chip */
+        /* Uploaded File Chip — force light background everywhere */
         [data-testid="stUploadedFileData"],
         [data-testid="stFileUploaderFileData"],
         [data-testid="stFileUploaderFile"],
         [data-testid="stUploadedFile"],
         div[data-testid="stFileUploader"] > section > div,
         div[data-testid="stFileUploaderFile"] {
-            background: linear-gradient(135deg, #DBEAFE, #E0F2FE) !important;
+            background: #E8F4FD !important;
+            background-color: #E8F4FD !important;
             border: 1px solid #93C5FD !important;
             border-radius: 14px !important;
             padding: 10px 14px !important;
+        }
+
+        /* Nuclear: kill ALL dark backgrounds inside file uploader */
+        [data-testid="stFileUploader"] div,
+        [data-testid="stFileUploader"] span,
+        [data-testid="stFileUploader"] section,
+        [data-testid="stFileUploader"] li,
+        [data-testid="stFileUploader"] a,
+        [data-testid="stFileUploader"] img,
+        [data-testid="stUploadedFileData"] *,
+        [data-testid="stFileUploaderFileData"] *,
+        [data-testid="stFileUploaderFile"] *,
+        [data-testid="stUploadedFile"] * {
+            background: transparent !important;
+            background-color: transparent !important;
+        }
+
+        /* Restore the outer uploader container bg */
+        [data-testid="stFileUploader"] {
+            background: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        /* Restore the dropzone bg */
+        [data-testid="stFileUploaderDropzone"] {
+            background: linear-gradient(135deg, rgba(232, 244, 253, 0.8), rgba(240, 248, 255, 0.6)) !important;
         }
 
         /* Text & Details Inside Uploaded File Chip */
@@ -483,26 +509,32 @@ def apply_styles():
         [data-testid="stUploadedFileData"] span,
         [data-testid="stUploadedFileData"] div,
         [data-testid="stUploadedFileData"] small,
+        [data-testid="stUploadedFileData"] p,
         [data-testid="stFileUploaderFile"] span,
         [data-testid="stFileUploaderFile"] div,
-        [data-testid="stFileUploaderFile"] small {
+        [data-testid="stFileUploaderFile"] small,
+        [data-testid="stFileUploaderFile"] p {
+            background: transparent !important;
             background-color: transparent !important;
-            color: #0A1628 !important;
-            font-weight: 700 !important;
+            color: #1E293B !important;
+            font-weight: 600 !important;
         }
 
-        /* Delete Icon Button */
+        /* Delete / Action Buttons inside file chip */
         [data-testid="stFileUploaderDeleteBtn"],
         [data-testid="stFileUploaderFileDeleteBtn"],
         [data-testid="stUploadedFileData"] button,
         [data-testid="stFileUploaderFile"] button {
-            background: #E0F2FE !important;
-            border: 1px solid #BAE6FD !important;
+            background: #DBEAFE !important;
+            background-color: #DBEAFE !important;
+            border: 1px solid #93C5FD !important;
             border-radius: 8px !important;
         }
 
+        /* SVG Icons */
         [data-testid="stUploadedFileData"] svg,
-        [data-testid="stFileUploaderFile"] svg {
+        [data-testid="stFileUploaderFile"] svg,
+        [data-testid="stFileUploader"] svg {
             fill: #0077B6 !important;
             color: #0077B6 !important;
         }
