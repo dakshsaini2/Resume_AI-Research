@@ -184,20 +184,17 @@ def predict_resume_score(
         experience_status = "Below Requirement"
 
 
-    if required_degree:
+    cand_deg_lower = candidate_degree.strip().lower()
+    req_deg_lower = required_degree.strip().lower()
 
-        if candidate_degree.strip().lower() == \
-                required_degree.strip().lower():
-
-            education_status = "Meets Requirement"
-
-        else:
-
-            education_status = "Does Not Match"
-
-    else:
-
+    if req_deg_lower == "not specified" or not req_deg_lower:
         education_status = "Not Specified"
+    elif cand_deg_lower == "not specified" or not cand_deg_lower:
+        education_status = "Not Provided"
+    elif education_match_score >= 1.0:
+        education_status = "Meets Requirement"
+    else:
+        education_status = "Below Requirement"
 
 
     if required_certifications:

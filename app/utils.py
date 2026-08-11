@@ -137,23 +137,89 @@ DEGREES = [
 # CERTIFICATIONS
 # ==========================================================
 
+# Named / platform-specific certifications
 CERTIFICATIONS = [
 
+    # Cloud
     "aws",
     "azure",
     "google cloud",
+    "gcp",
 
-    "oracle",
-
+    # Networking / OS
     "ccna",
-
+    "ccnp",
     "redhat",
+    "rhce",
+    "comptia",
+    "linux+",
 
+    # Database / Oracle
+    "oracle",
+    "mysql",
+
+    # CRM / ERP
     "salesforce",
+    "sap",
 
+    # AI / ML
     "tensorflow",
+    "deeplearning.ai",
+    "coursera",
+    "udemy",
+    "edx",
+    "udacity",
+    "nptel",
+    "swayam",
+    "great learning",
+    "simplilearn",
+    "kaggle",
 
+    # Project / Management
     "pmp",
+    "prince2",
+    "scrum",
+    "agile",
+
+    # Cybersecurity
+    "ceh",
+    "cissp",
+    "ethical hacking",
+
+    # Data
+    "tableau",
+    "power bi",
+    "data analytics",
+
+    # Development
+    "github",
+    "docker",
+    "kubernetes",
+]
+
+# Generic certificate phrase patterns (internship / training / online)
+_CERT_PHRASE_PATTERNS = [
+    # Internship certificate
+    r"internship\s+certif",
+    r"certif\w*\s+of\s+internship",
+    r"intern\w*\s+certif",
+
+    # Completion / achievement certificate
+    r"certif\w*\s+of\s+complet",
+    r"complet\w*\s+certif",
+    r"certif\w*\s+of\s+achiev",
+    r"certif\w*\s+of\s+particip",
+    r"certif\w*\s+of\s+training",
+    r"training\s+certif",
+
+    # Online / course certificate
+    r"online\s+certif",
+    r"course\s+certif",
+    r"e-?learning\s+certif",
+
+    # General certified / certification
+    r"\bcertified\b",
+    r"\bcertification\b",
 ]
 
 # ==========================================================
@@ -492,18 +558,56 @@ def extract_degree(text):
 # ==========================================================
 
 def extract_certifications(text):
+    """
+    Detect certifications from resume / job text.
 
-    text = text.lower()
+    Strategy 1 — Named platform certs (AWS, Azure, Coursera …)
+    Strategy 2 — Generic phrase patterns:
+                 internship certificate, certificate of completion,
+                 training certificate, certified, etc.
+    """
+
+    if not text:
+        return []
+
+    text_lower = text.lower()
 
     found = set()
+
+    # --------------------------------------------------
+    # Strategy 1: Named / platform certifications
+    # --------------------------------------------------
 
     for cert in CERTIFICATIONS:
 
         pattern = r"\b" + re.escape(cert.lower()) + r"\b"
 
-        if re.search(pattern, text):
+        if re.search(pattern, text_lower):
 
             found.add(cert)
+
+    # --------------------------------------------------
+    # Strategy 2: Generic certificate phrase patterns
+    # (internship cert, completion cert, training cert …)
+    # --------------------------------------------------
+
+    for phrase_pattern in _CERT_PHRASE_PATTERNS:
+
+        match = re.search(phrase_pattern, text_lower)
+
+        if match:
+
+            # Extract a short label around the match
+            start = max(0, match.start() - 5)
+            end   = min(len(text_lower), match.end() + 25)
+            snippet = text_lower[start:end].strip()
+
+            # Clean to a readable label
+            label = re.sub(r"[^a-z0-9\s]", " ", snippet)
+            label = re.sub(r"\s+", " ", label).strip().title()
+
+            if label:
+                found.add(label)
 
     return sorted(found)
 

@@ -29,6 +29,7 @@ from utils import (
 from config import (
     MODEL_DIR,
     SBERT_MODEL,
+    DEGREE_LEVELS,
 )
 
 # ==========================================================
@@ -169,15 +170,25 @@ def generate_features(
         job_text
     )
 
-    education_exact_match = int(
-        candidate_degree.strip().lower()
-        ==
-        required_degree.strip().lower()
-    )
+    cand_deg_lower = candidate_degree.strip().lower()
+    req_deg_lower = required_degree.strip().lower()
 
-    education_match_score = float(
-        education_exact_match
-    )
+    if req_deg_lower == "not specified" or not req_deg_lower:
+        education_match_score = 1.0
+        education_exact_match = 1
+    elif cand_deg_lower == "not specified" or not cand_deg_lower:
+        education_match_score = 0.0
+        education_exact_match = 0
+    else:
+        cand_level = DEGREE_LEVELS.get(cand_deg_lower, 2)
+        req_level = DEGREE_LEVELS.get(req_deg_lower, 2)
+
+        if cand_level >= req_level:
+            education_match_score = 1.0
+            education_exact_match = int(cand_deg_lower == req_deg_lower)
+        else:
+            education_match_score = round(cand_level / req_level, 2)
+            education_exact_match = 0
 
 
     # ---------------------------------------
@@ -207,7 +218,7 @@ def generate_features(
             1.0
         )
 
-            # ---------------------------------------
+    # ---------------------------------------
     # CERTIFICATIONS
     # ---------------------------------------
 
@@ -286,7 +297,8 @@ def generate_features(
     skill_overlap_count = len(
         matched_skills
     )
-        # ---------------------------------------
+
+    # ---------------------------------------
     # FINAL FEATURE DICTIONARY
     # ---------------------------------------
 
