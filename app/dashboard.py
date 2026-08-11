@@ -101,12 +101,44 @@ def show_dashboard(result):
 
     with right:
         st.html(f"""
-        <div class="verdict-card">
-            <div class="verdict-title">🏆 Recruiter Verdict</div>
-            <div class="verdict-value">{recommendation}</div>
-            <div class="metric-description-light">
+        <div style="
+            background: linear-gradient(135deg, #0D5C9E 0%, #1570BF 45%, #1976D2 100%) !important;
+            border-radius: 24px;
+            padding: 32px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow:
+                0 16px 48px rgba(13, 92, 158, 0.35),
+                0 0 0 1px rgba(255,255,255,0.08) inset;
+            position: relative;
+            overflow: hidden;
+        ">
+            <!-- Ambient glow -->
+            <div style="position:absolute;top:-50%;right:-20%;width:220px;height:220px;
+                background:radial-gradient(circle,rgba(0,180,216,0.15) 0%,transparent 70%);
+                border-radius:50%;pointer-events:none;"></div>
+
+            <div style="color:rgba(255,255,255,0.5) !important;font-size:11px;font-weight:700;
+                text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;
+                position:relative;z-index:1;">🏆 RECRUITER VERDICT</div>
+
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;
+                position:relative;z-index:1;">
+                <div style="width:14px;height:14px;border-radius:50%;
+                    background:{'#10B981' if score >= 75 else '#F59E0B' if score >= 60 else '#EF4444'};
+                    box-shadow:0 0 12px {'rgba(16,185,129,0.5)' if score >= 75 else 'rgba(245,158,11,0.5)' if score >= 60 else 'rgba(239,68,68,0.5)'};
+                    flex-shrink:0;"></div>
+                <div style="font-size:28px;font-weight:800;color:#FFFFFF !important;line-height:1.2;
+                    letter-spacing:-0.5px;">{recommendation}</div>
+            </div>
+
+            <div style="color:rgba(255,255,255,0.45) !important;font-size:13px;margin-top:4px;
+                position:relative;z-index:1;font-weight:500;">
                 Based on skills, education, experience &amp; semantic similarity.
             </div>
+
             <div style="
                 margin-top: 24px;
                 display: flex;
@@ -116,34 +148,36 @@ def show_dashboard(result):
                 z-index: 1;
             ">
                 <div style="
-                    background: rgba(255,255,255,0.08);
-                    border: 1px solid rgba(0,180,216,0.25);
-                    border-radius: 12px;
-                    padding: 10px 18px;
+                    background: rgba(255,255,255,0.06);
+                    border: 1px solid rgba(255,255,255,0.15);
+                    border-radius: 14px;
+                    padding: 14px 18px;
                     text-align: center;
                     flex: 1;
+                    backdrop-filter: blur(8px);
                 ">
-                    <div style="font-size:26px;font-weight:900;color:#FFFFFF;letter-spacing:-1px;">
+                    <div style="font-size:28px;font-weight:900;color:#FFFFFF !important;letter-spacing:-1px;">
                         {score:.1f}%
                     </div>
-                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);
-                        text-transform:uppercase;letter-spacing:1px;margin-top:3px;">
+                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.45) !important;
+                        text-transform:uppercase;letter-spacing:1.2px;margin-top:4px;">
                         ATS Score
                     </div>
                 </div>
                 <div style="
-                    background: rgba(255,255,255,0.08);
-                    border: 1px solid rgba(0,180,216,0.25);
-                    border-radius: 12px;
-                    padding: 10px 18px;
+                    background: rgba(255,255,255,0.06);
+                    border: 1px solid rgba(255,255,255,0.15);
+                    border-radius: 14px;
+                    padding: 14px 18px;
                     text-align: center;
                     flex: 1;
+                    backdrop-filter: blur(8px);
                 ">
-                    <div style="font-size:26px;font-weight:900;color:#FFFFFF;letter-spacing:-1px;">
+                    <div style="font-size:28px;font-weight:900;color:#FFFFFF !important;letter-spacing:-1px;">
                         {len(matched_skills)}/{len(required_skills)}
                     </div>
-                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.4);
-                        text-transform:uppercase;letter-spacing:1px;margin-top:3px;">
+                    <div style="font-size:10px;font-weight:700;color:rgba(255,255,255,0.45) !important;
+                        text-transform:uppercase;letter-spacing:1.2px;margin-top:4px;">
                         Skills
                     </div>
                 </div>

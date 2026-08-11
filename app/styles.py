@@ -31,11 +31,11 @@ def apply_styles():
         }
 
         /* =====================================================
-           APP BACKGROUND  — soft alice-blue wash
+           APP BACKGROUND  — soft gradient with subtle pattern
         ===================================================== */
 
         .stApp {
-            background: linear-gradient(160deg, #EBF5FB 0%, #F0F8FF 55%, #E8F4FD 100%) !important;
+            background: linear-gradient(160deg, #E8F1F8 0%, #F0F8FF 40%, #EBF5FB 70%, #F5FAFF 100%) !important;
             min-height: 100vh;
         }
 
@@ -62,7 +62,7 @@ def apply_styles():
         .stMarkdown p,
         .stMarkdown span,
         .stMarkdown li {
-            color: #0F172A;
+            color: #334155;
         }
 
         /* Streamlit bordered container text */
@@ -95,7 +95,7 @@ def apply_styles():
         }
 
         /* =====================================================
-           SIDEBAR  — Deep Navy gradient
+           SIDEBAR  — Deep Navy gradient with frosted glass
         ===================================================== */
 
         [data-testid="stSidebar"] {
@@ -226,14 +226,16 @@ def apply_styles():
         ===================================================== */
 
         .verdict-card {
-            background: linear-gradient(135deg, #0E4C92 0%, #1E90FF 50%, #4facfe 100%);   
+            background: linear-gradient(135deg, #0D5C9E 0%, #1570BF 45%, #1976D2 100%) !important;
             border-radius: 24px;
             padding: 32px;
             min-height: 180px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 20px 60px rgba(0, 77, 130, 0.35);
+            box-shadow:
+                0 16px 48px rgba(13, 92, 158, 0.35),
+                0 0 0 1px rgba(255,255,255,0.08) inset;
             position: relative;
             overflow: hidden;
         }
@@ -244,13 +246,20 @@ def apply_styles():
             top: -50%; right: -20%;
             width: 220px; height: 220px;
             background: radial-gradient(circle,
-                rgba(0, 180, 216, 0.35) 0%,
+                rgba(255, 255, 255, 0.12) 0%,
                 transparent 70%);
             border-radius: 50%;
         }
 
+        /* Force ALL text inside verdict card to be white/light */
+        .verdict-card div,
+        .verdict-card span,
+        .verdict-card p {
+            color: #FFFFFF !important;
+        }
+
         .verdict-title {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.5) !important;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
@@ -259,16 +268,16 @@ def apply_styles():
         }
 
         .verdict-value {
-            font-size: 26px;
+            font-size: 28px;
             font-weight: 800;
-            color: #FFFFFF;
+            color: #FFFFFF !important;
             line-height: 1.2;
             position: relative;
             z-index: 1;
         }
 
         .metric-description-light {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.45) !important;
             font-size: 13px;
             margin-top: 12px;
             position: relative;
@@ -322,24 +331,37 @@ def apply_styles():
         }
 
         /* =====================================================
-           BUTTONS  — Ocean Blue
+           BUTTONS  — Ocean Blue with glow
         ===================================================== */
 
         .stButton > button {
-            border-radius: 14px !important;
+            border-radius: 16px !important;
             border: none !important;
-            background: linear-gradient(135deg, #0077B6, #0096C7) !important;
+            background: linear-gradient(135deg, #0066A1 0%, #0088CC 50%, #00A3E0 100%) !important;
             color: white !important;
             font-weight: 700 !important;
-            font-size: 15px !important;
-            padding: 0.75rem 2rem !important;
-            box-shadow: 0 8px 24px rgba(0, 119, 182, 0.35) !important;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            font-size: 16px !important;
+            padding: 0.85rem 2.5rem !important;
+            min-height: 56px !important;
+            box-shadow:
+                0 8px 24px rgba(0, 119, 182, 0.35),
+                0 0 0 0 rgba(0, 180, 216, 0) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            letter-spacing: 0.3px !important;
+            position: relative !important;
+            overflow: hidden !important;
         }
 
         .stButton > button:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 14px 32px rgba(0, 119, 182, 0.45) !important;
+            transform: translateY(-3px) !important;
+            box-shadow:
+                0 16px 40px rgba(0, 119, 182, 0.4),
+                0 0 20px rgba(0, 180, 216, 0.15) !important;
+            background: linear-gradient(135deg, #005A8F 0%, #0077B6 50%, #0096C7 100%) !important;
+        }
+
+        .stButton > button:active {
+            transform: translateY(-1px) !important;
         }
 
         /* Force inner text white */
@@ -354,21 +376,23 @@ def apply_styles():
         ===================================================== */
 
         .stDownloadButton > button {
-            border-radius: 14px !important;
-            background: linear-gradient(135deg, #0077B6, #0096C7) !important;
+            border-radius: 16px !important;
+            background: linear-gradient(135deg, #0066A1 0%, #0088CC 50%, #00A3E0 100%) !important;
             color: #FFFFFF !important;
             border: none !important;
             font-weight: 700 !important;
             font-size: 15px !important;
             min-height: 52px !important;
             box-shadow: 0 8px 24px rgba(0, 119, 182, 0.35) !important;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
             letter-spacing: 0.2px !important;
         }
 
         .stDownloadButton > button:hover {
-            transform: translateY(-2px) !important;
-            box-shadow: 0 14px 32px rgba(0, 119, 182, 0.45) !important;
+            transform: translateY(-3px) !important;
+            box-shadow:
+                0 16px 40px rgba(0, 119, 182, 0.4),
+                0 0 20px rgba(0, 180, 216, 0.15) !important;
         }
 
         /* Force inner text white */
@@ -379,72 +403,102 @@ def apply_styles():
         }
 
         /* =====================================================
-           FILE UPLOADER
+           FILE UPLOADER — Frosted Glass Card
         ===================================================== */
 
+        /* Outer Container */
         [data-testid="stFileUploader"] {
-            background: #FFFFFF !important;
-            border: 2px dashed #BAE6FD !important;
-            border-radius: 18px !important;
-            padding: 14px !important;
+            background: rgba(255, 255, 255, 0.7) !important;
+            border: 2px dashed rgba(0, 150, 199, 0.35) !important;
+            border-radius: 20px !important;
+            padding: 20px !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            transition: all 0.3s ease !important;
         }
 
+        [data-testid="stFileUploader"]:hover {
+            border-color: rgba(0, 119, 182, 0.55) !important;
+            background: rgba(255, 255, 255, 0.85) !important;
+            box-shadow: 0 8px 32px rgba(0, 119, 182, 0.1) !important;
+        }
+
+        /* Inner Dropzone Area */
         [data-testid="stFileUploaderDropzone"] {
-            background: #F0F8FF !important;
-            border-radius: 14px !important;
-            padding: 24px !important;
+            background: linear-gradient(135deg, rgba(232, 244, 253, 0.8), rgba(240, 248, 255, 0.6)) !important;
+            border-radius: 16px !important;
+            padding: 28px !important;
+            transition: background 0.3s ease !important;
         }
 
+        /* All Dropzone Labels & Text */
         [data-testid="stFileUploader"] p,
         [data-testid="stFileUploader"] span,
         [data-testid="stFileUploader"] small,
         [data-testid="stFileUploaderDropzone"] p,
         [data-testid="stFileUploaderDropzone"] span {
-            color: #475569 !important;
-            font-weight: 500 !important;
+            color: #334155 !important;
+            font-weight: 600 !important;
         }
 
+        /* Browse Files Button */
         [data-testid="stFileUploaderDropzone"] button {
-            background: linear-gradient(135deg, #EBF5FB, #DBEAFE) !important;
-            color: #0077B6 !important;
-            border: 1px solid #BAE6FD !important;
-            border-radius: 10px !important;
+            background: linear-gradient(135deg, #0077B6, #0096C7) !important;
+            color: #FFFFFF !important;
+            border: none !important;
+            border-radius: 12px !important;
             font-weight: 700 !important;
             font-size: 13px !important;
-            padding: 6px 16px !important;
-            box-shadow: none !important;
+            padding: 10px 22px !important;
+            box-shadow: 0 6px 16px rgba(0, 119, 182, 0.25) !important;
+            transition: all 0.25s ease !important;
         }
 
-        /* Uploaded File Container & Card Fix */
+        [data-testid="stFileUploaderDropzone"] button:hover {
+            transform: translateY(-1px) !important;
+            box-shadow: 0 8px 24px rgba(0, 119, 182, 0.35) !important;
+        }
+
+        [data-testid="stFileUploaderDropzone"] button p,
+        [data-testid="stFileUploaderDropzone"] button span {
+            color: #FFFFFF !important;
+        }
+
+        /* Uploaded File Chip */
         [data-testid="stUploadedFileData"],
         [data-testid="stFileUploaderFileData"],
         [data-testid="stFileUploaderFile"],
         [data-testid="stUploadedFile"],
-        div[data-testid="stFileUploader"] > section > div {
-            background: #F0F8FF !important;
-            border: 1px solid #BAE6FD !important;
-            border-radius: 12px !important;
+        div[data-testid="stFileUploader"] > section > div,
+        div[data-testid="stFileUploaderFile"] {
+            background: linear-gradient(135deg, #DBEAFE, #E0F2FE) !important;
+            border: 1px solid #93C5FD !important;
+            border-radius: 14px !important;
             padding: 10px 14px !important;
-            color: #0A1628 !important;
         }
 
+        /* Text & Details Inside Uploaded File Chip */
         [data-testid="stUploadedFileName"],
         [data-testid="stFileUploaderFileName"],
         [data-testid="stUploadedFileData"] span,
         [data-testid="stUploadedFileData"] div,
+        [data-testid="stUploadedFileData"] small,
         [data-testid="stFileUploaderFile"] span,
-        [data-testid="stFileUploaderFile"] div {
-            background-color: #E0F2FE !important; 
-            font-weight: 600 !important;
+        [data-testid="stFileUploaderFile"] div,
+        [data-testid="stFileUploaderFile"] small {
+            background-color: transparent !important;
+            color: #0A1628 !important;
+            font-weight: 700 !important;
         }
 
+        /* Delete Icon Button */
         [data-testid="stFileUploaderDeleteBtn"],
         [data-testid="stFileUploaderFileDeleteBtn"],
         [data-testid="stUploadedFileData"] button,
         [data-testid="stFileUploaderFile"] button {
-            background-color: #FFFFFF !important;  
-            background: transparent !important;
-            border: none !important;
+            background: #E0F2FE !important;
+            border: 1px solid #BAE6FD !important;
+            border-radius: 8px !important;
         }
 
         [data-testid="stUploadedFileData"] svg,
@@ -454,30 +508,40 @@ def apply_styles():
         }
 
         /* =====================================================
-           TEXT AREA
+           TEXT AREA — Elevated with smooth focus
         ===================================================== */
 
         .stTextArea textarea {
             background: #FFFFFF !important;
             color: #0F172A !important;
-            border-radius: 14px !important;
-            border: 2px solid #DBEAFE !important;
+            border-radius: 16px !important;
+            border: 2px solid #E2E8F0 !important;
             font-family: 'Inter', sans-serif !important;
             font-size: 14px !important;
             font-weight: 400 !important;
-            line-height: 1.6 !important;
-            padding: 14px !important;
+            line-height: 1.7 !important;
+            padding: 18px !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03) !important;
+        }
+
+        .stTextArea textarea:hover {
+            border-color: #94A3B8 !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
         }
 
         .stTextArea textarea:focus {
             border-color: #0077B6 !important;
-            box-shadow: 0 0 0 3px rgba(0, 119, 182, 0.15) !important;
+            box-shadow:
+                0 0 0 4px rgba(0, 119, 182, 0.12),
+                0 4px 20px rgba(0, 119, 182, 0.08) !important;
             outline: none !important;
         }
 
         .stTextArea textarea::placeholder {
             color: #94A3B8 !important;
             font-style: italic !important;
+            font-weight: 400 !important;
         }
 
         .stTextArea label, .stTextArea label p {
@@ -486,14 +550,19 @@ def apply_styles():
         }
 
         /* =====================================================
-           DIVIDER
+           DIVIDER — Refined gradient
         ===================================================== */
 
         hr {
             border: none !important;
             height: 1px !important;
-            background: linear-gradient(90deg, transparent, #CBD5E1, transparent) !important;
-            margin: 28px 0 !important;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(0, 119, 182, 0.12) 20%,
+                rgba(0, 119, 182, 0.2) 50%,
+                rgba(0, 119, 182, 0.12) 80%,
+                transparent 100%) !important;
+            margin: 32px 0 !important;
         }
 
         /* =====================================================
@@ -575,7 +644,7 @@ def apply_styles():
         }
 
         /* =====================================================
-           PULSE ANIMATION (header dot)
+           ANIMATIONS
         ===================================================== */
 
         @keyframes pulse-dot {
@@ -585,6 +654,27 @@ def apply_styles():
 
         .pulse-dot {
             animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%   { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-8px); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         </style>
