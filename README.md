@@ -7,7 +7,7 @@ The system helps recruiters and candidates understand how well a resume matches 
 
 ---
 
-## 🚀 Features
+## 🚀 Features 
 
 ### 📄 Resume Analysis
 
