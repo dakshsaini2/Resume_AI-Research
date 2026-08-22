@@ -1,5 +1,5 @@
 # Resume_AI-Research
-# 🧠 Resume AI — Intelligent ATS Resume Screening System
+# 🧠 Resume AI — Intelligent ATS Resume Screening System. 
 
 An AI-powered **Applicant Tracking System (ATS)** that analyzes resumes against job descriptions and generates an intelligent compatibility score using **NLP, semantic similarity, TF-IDF, skill matching, and a Random Forest machine learning model**.
 
