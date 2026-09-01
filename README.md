@@ -19,7 +19,7 @@ The system helps recruiters and candidates understand how well a resume matches 
   * Education
   * Experience 
   * Certifications
-  * Relevant candidate information
+  * Relevant candidate information 
 
 ### 💼 Job Description Analysis 
 
