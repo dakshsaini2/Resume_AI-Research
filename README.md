@@ -9,7 +9,7 @@ The system helps recruiters and candidates understand how well a resume matches 
 
 ## 🚀 Features 
 
-### 📄 Resume Analysis
+### 📄 Resume Analysis 
 
 * Supports **PDF** and **DOCX** resumes
 * Extracts resume text automatically
