@@ -17,7 +17,7 @@ The system helps recruiters and candidates understand how well a resume matches 
 
   * Skills
   * Education
-  * Experience
+  * Experience 
   * Certifications
   * Relevant candidate information
 
