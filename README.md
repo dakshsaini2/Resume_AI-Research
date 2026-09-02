@@ -611,7 +611,7 @@ GitHub:
 https://github.com/dakshsaini2
 
 ---
-
+#At
 # ⭐ Project Goal
 
 The goal of ResumeAI is to build an intelligent and explainable resume screening system that combines traditional NLP techniques with semantic embeddings and machine learning to provide meaningful resume-job compatibility analysis.
