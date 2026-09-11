@@ -214,7 +214,7 @@ This allows the system to recognize related concepts even when exact words diffe
 
 ## 3. Feature Engineering
 
-The trained model uses **14 engineered features**:
+The trained model uses **14 engineered features**: 
 
 | Feature                   |
 | ------------------------- |
