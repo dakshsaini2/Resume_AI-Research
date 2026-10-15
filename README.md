@@ -6,11 +6,6 @@ An AI-powered **Applicant Tracking System (ATS)** that analyzes resumes against 
 The system helps recruiters and candidates understand how well a resume matches a particular job and identifies missing skills, experience gaps, education compatibility, and other important factors.
 
 ---
-# Public Transit Project
-
-Here’s the transit icon we’re using:
-
-![Transit Icon](./attachments/HxKRnAhYpk5NzAyTBomQV.png)
 
 ## 🚀 Features  
 
