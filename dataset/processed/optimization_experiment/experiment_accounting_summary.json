@@ -1,0 +1,20 @@
+{
+  "timestamp": "2026-10-11T18:02:36.288552Z",
+  "sample_accounting": {
+    "attempted": 1,
+    "completed_original": 1,
+    "completed_unconstrained": 0,
+    "completed_preserving": 0,
+    "completed_both_matched": 0,
+    "failed_samples": 1,
+    "failures_by_stage": {
+      "evidence_extraction": 1,
+      "unconstrained_optimization": 0,
+      "unconstrained_verification": 0,
+      "preserving_optimization": 0,
+      "preserving_verification": 0
+    }
+  },
+  "matched_pairs_metrics": {},
+  "hallucination_and_factuality_rates": {}
+}

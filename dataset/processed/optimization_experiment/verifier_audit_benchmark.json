@@ -1,0 +1,78 @@
+{
+  "timestamp": "2026-10-11T17:46:39.101609Z",
+  "total_test_cases": 4,
+  "passed_tests": 4,
+  "accuracy_percent": 100.0,
+  "confusion_matrix": {
+    "true_positives_hallucinations_detected": 2,
+    "true_negatives_clean_verified": 2,
+    "false_positives_clean_flagged": 0,
+    "false_negatives_hallucinations_missed": 0
+  },
+  "metrics": {
+    "hallucination_detection_precision": 100.0,
+    "hallucination_detection_recall": 100.0,
+    "false_positive_rate": 0.0
+  },
+  "detailed_results": [
+    {
+      "test_id": "TC-01-KNOWN-SUPPORTED",
+      "category": "known_supported",
+      "passed": true,
+      "expected_faithful": true,
+      "actual_faithful": true,
+      "unsupported_count": 0,
+      "unsupported_claims": [],
+      "supported_count": 6,
+      "reasoning": "Every claim in the resume maps directly to the Evidence Inventory. The job title, employer, employment dates (2022 - 2024 spanning 2 years), education details, skills, project details, and paraphrased bullet points (maintaining REST APIs with PostgreSQL, Docker deployment workflows, Python CLI tool with Git) are fully substantiated without introducing any ungrounded metrics, tools, or credentials."
+    },
+    {
+      "test_id": "TC-02-LEGITIMATE-PARAPHRASE",
+      "category": "legitimate_paraphrase",
+      "passed": true,
+      "expected_faithful": true,
+      "actual_faithful": true,
+      "unsupported_count": 0,
+      "unsupported_claims": [],
+      "supported_count": 7,
+      "reasoning": "Every claim in the optimized resume is directly grounded in the Evidence Inventory. The professional summary accurately synthesizes the verified role (Backend Developer at FinTech Labs) and tech stack (Java ecosystem). Skills match the inventory verbatim. The bullet points legitimately paraphrase 'Engineered transaction service with 99.9% uptime' into 'Architected payment processing services maintaining three-nines (99.9%) production availability' and 'Wrote unit tests improving code coverage' using verified skill JUnit. Education and certification details match exactly."
+    },
+    {
+      "test_id": "TC-03-INVENTED-QUALIFICATIONS",
+      "category": "deliberately_invented",
+      "passed": true,
+      "expected_faithful": false,
+      "actual_faithful": false,
+      "unsupported_count": 7,
+      "unsupported_claims": [
+        "Role/Title: Senior Full Stack Engineer",
+        "Claim of expertise in cloud-native microservices, Golang, and Kubernetes orchestration",
+        "Skills: Golang, Kubernetes, AWS, Terraform",
+        "Job Title: Lead Cloud Engineer at Digital Agency (Evidence states Junior Front-End Developer)",
+        "Designed Kubernetes clusters and microservices in Golang on AWS",
+        "Certification: AWS Certified Solutions Architect \u2014 Professional",
+        "Certification: Certified Kubernetes Administrator (CKA)"
+      ],
+      "supported_count": 4,
+      "reasoning": "The optimized resume includes massive fabrications across titles, skills, achievements, and credentials. The candidate's actual background is as a Junior Front-End Developer with an Associate Degree and skills in HTML, CSS, and JavaScript. The resume fabricates titles ('Senior Full Stack Engineer', 'Lead Cloud Engineer'), technologies and skills ('Golang', 'Kubernetes', 'AWS', 'Terraform'), responsibilities ('Designed Kubernetes clusters and microservices in Golang on AWS'), and two professional certifications ('AWS Certified Solutions Architect \u2014 Professional', 'Certified Kubernetes Administrator (CKA)'). Only the HTML/CSS landing page creation, basic front-end skills, and college education match the evidence inventory."
+    },
+    {
+      "test_id": "TC-04-QUALIFICATION-INFLATION",
+      "category": "subtle_inflation",
+      "passed": true,
+      "expected_faithful": false,
+      "actual_faithful": false,
+      "unsupported_count": 6,
+      "unsupported_claims": [
+        "Title: Senior Strategic Analytics Manager / Senior Analytics Manager (Ground truth: Summer Data Intern)",
+        "Tenure: 5+ years of leadership / 2019 - 2024 at Retail Co (Ground truth: Jun 2023 - Aug 2023)",
+        "Skills: Executive Stakeholder Management, Team Leadership",
+        "Executive leadership directing enterprise analytics teams",
+        "Spearheaded company-wide data initiatives and managed a team of 12 data analysts",
+        "Optimized multi-million dollar sales pipelines"
+      ],
+      "supported_count": 3,
+      "reasoning": "Cross-checking the resume against the Evidence Inventory reveals massive fabrications. The candidate was a Summer Data Intern for three months in 2023, but the resume fabricates a Senior Analytics Manager title spanning five years (2019-2024). Furthermore, claims of leading 12 analysts, managing multi-million dollar pipelines, and skills in team leadership and executive stakeholder management have zero basis in the evidence inventory."
+    }
+  ]
+}

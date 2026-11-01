@@ -1,0 +1,15 @@
+No,Feature,Group,Description
+1,tfidf_similarity,Lexical,Cosine similarity between TF-IDF vectors of resume and job texts
+2,semantic_similarity,Semantic,Cosine similarity between SBERT embeddings of resume and job texts
+3,skill_match_score,Structured ATS,Ratio of matched skills to required skills
+4,education_match_score,Structured ATS,Degree level match ratio (candidate vs required)
+5,experience_match_score,Structured ATS,Experience years match ratio (capped at 1.0)
+6,certification_match_score,Structured ATS,Ratio of matched certifications to required certifications
+7,resume_length,Text Statistics,Character length of preprocessed resume text
+8,job_length,Text Statistics,Character length of preprocessed job text
+9,resume_word_count,Text Statistics,Word count of preprocessed resume text
+10,job_word_count,Text Statistics,Word count of preprocessed job text
+11,candidate_skill_count,Structured ATS,Number of skills extracted from resume
+12,required_skill_count,Structured ATS,Number of skills required by job
+13,skill_overlap_count,Structured ATS,Count of skills found in both resume and job
+14,education_exact_match,Structured ATS,Binary indicator: 1 if degree names match exactly

@@ -1,0 +1,11 @@
+Metric,Cohens_d,Effect_Size,Direction
+MAE,-2.9770468110836505,Large,Hybrid better
+RMSE,-3.047002128915181,Large,Hybrid better
+R2,2.9845002353152106,Large,Hybrid better
+NDCG@1,2.010763497348081,Large,Hybrid better
+NDCG@3,2.834167912944487,Large,Hybrid better
+NDCG@5,2.540884124159373,Large,Hybrid better
+NDCG@10,2.7887506487598133,Large,Hybrid better
+MRR,1.8323907125376186,Large,Hybrid better
+Precision@3,2.2876938118854975,Large,Hybrid better
+Recall@3,2.455677081048494,Large,Hybrid better

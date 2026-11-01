@@ -1,3 +1,90 @@
+<<<<<<< HEAD
+#  Resume AI Research
+
+An advanced, end-to-end AI-powered Applicant Tracking System (ATS). It evaluates candidate resumes against job descriptions by blending traditional NLP techniques, state-of-the-art semantic embeddings, and a custom Hybrid Scoring System to provide highly accurate, explainable candidate matching.
+
+---
+
+##  Key Features
+
+- **Hybrid Scoring Engine:** Combines explicit rule-based matching (35% Skills, 15% Experience, 10% Education, 5% Certifications), NLP heuristics (10% TF-IDF), semantic similarity (20% SBERT), and a Random Forest ML model (5%) to prevent model-collapse and ensure explainability.
+- **Multi-format Parsing:** Seamlessly extracts text from both `PDF` and `DOCX` files.
+- **Advanced Skill Extraction:** Resolves synonyms (e.g., *GitHub* → *Git*), implies broader categories (e.g., *TensorFlow* → *Machine Learning*), and calculates exact overlap/missing skills.
+- **Smart Hierarchy Matching:** Understands education hierarchies (e.g., knows that an `M.Tech` satisfies a `B.Tech` requirement).
+- **Experience Parsing:** Extracts and normalizes experience from complex date ranges (e.g., "May 2022 to June 2022") and explicit phrases (e.g., "2 years").
+- **100% Test Coverage:** Verified by a comprehensive 88-assertion test suite validating all edge cases and scoring scenarios.
+
+---
+
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    subgraph Input
+        A[Resume PDF/DOCX] --> C[Text Extractor]
+        B[Job Description] --> C
+    end
+
+    subgraph Preprocessing
+        C --> D[Clean & Normalize Text]
+        D --> E[Lemmatization & Tokenization]
+    end
+
+    subgraph Feature Engineering
+        E --> F[Skill Matcher]
+        E --> G[Education Hierarchy]
+        E --> H[Experience Parser]
+        E --> I[Certification Detector]
+        E --> J[TF-IDF Vectorizer]
+        E --> K[SBERT Semantic Encoder]
+    end
+
+    subgraph Hybrid Scoring Engine
+        F --> L((Weighted ATS Score))
+        G --> L
+        H --> L
+        I --> L
+        J --> L
+        K --> L
+        M[Random Forest Model] --> L
+    end
+    
+    subgraph Output
+        L --> N[Final Match Percentage]
+        L --> O[Candidate Summary]
+        L --> P[Missing/Matched Skills]
+    end
+```
+
+---
+
+## 📂 Repository Structure
+
+```text
+c:\Users\Lenovo\Resume_AI_Research\
+├── app/
+│   ├── api/                   # FastAPI Backend
+│   │   └── main.py            # API entry point & endpoints
+│   ├── models/                # Trained ML models and vectorizers
+│   │   ├── best_resume_model.pkl
+│   │   ├── scaler.pkl
+│   │   └── tfidf_vectorizer.pkl
+│   ├── train/                 # Research and training scripts
+│   │   ├── train_model_research_final_fixed.py
+│   │   └── ... 
+│   ├── app.py                 # Streamlit UI Entry point
+│   ├── dashboard.py           # Streamlit UI Components
+│   ├── predictor.py           # Core Hybrid Scoring Logic
+│   ├── feature_engineering.py # NLP and Semantic feature generation
+│   ├── preprocessing.py       # Text cleaning and lemmatization
+│   ├── utils.py               # Data extraction (skills, edu, exp)
+│   ├── config.py              # Global thresholds & scoring weights
+│   └── final_test.py          # 88-assertion unit and scenario test suite
+├── dataset/                   # Resume and Job description datasets
+├── figures/                   # Research evaluation graphs
+├── notebooks/                 # Jupyter notebooks for exploratory data analysis
+└── README.md                  # Project documentation
+=======
 # Resume_AI-Research
 # 🧠 Resume AI — Intelligent ATS Resume Screening System. 
 
@@ -328,10 +415,57 @@ Resume_AI_Research/
 ├── requirements.txt
 ├── README.md
 └── ...
+>>>>>>> a97446b0897607cfac80ea1975a78e026040501f
 ```
 
 ---
 
+<<<<<<< HEAD
+## ⚙️ How Scoring Works (Hybrid System)
+
+The standard Random Forest ML model alone compressed scores into a narrow 76–80% band regardless of input quality. To fix this, we implemented a highly accurate **Hybrid Scoring System** configured in `config.py`:
+
+| Component | Weight | Rationale |
+|-----------|--------|-----------|
+| **Skill Match Score** | `35%` | Most critical ATS factor (exact/synonym match). |
+| **SBERT Similarity** | `20%` | Measures deep contextual meaning overlap. |
+| **Experience Match** | `15%` | Key qualifier (normalized numerical comparison). |
+| **Education Match** | `10%` | Degree requirement check (hierarchy aware). |
+| **TF-IDF Similarity** | `10%` | Raw keyword distribution overlap. |
+| **Certification Match** | `5%` | Nice-to-have specialized training. |
+| **RF Model Prediction** | `5%` | Retained ML model as a minor signal. |
+
+---
+
+## 🛠️ Installation & Setup
+
+### 1. Prerequisites
+- Python 3.9+
+
+### 2. Backend Setup
+```bash
+# Clone the repository and enter the directory
+cd Resume_AI_Research/app
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Download Spacy English model
+python -m spacy download en_core_web_sm
+```
+
+### 3. Run the FastAPI Server
+```bash
+cd app
+uvicorn api.main:app --host 127.0.0.1 --port 8000 --reload
+```
+The API will be available at `http://127.0.0.1:8000`.
+
+### 4. Run the Streamlit Dashboard (Alternative UI)
+```bash
+cd app
+streamlit run app.py
+=======
 # ⚙️ Technologies Used
 
 ## Programming
@@ -404,10 +538,24 @@ resume_ai\Scripts\activate
 
 ```powershell
 pip install -r requirements.txt
+>>>>>>> a97446b0897607cfac80ea1975a78e026040501f
 ```
 
 ---
 
+<<<<<<< HEAD
+## 🧪 Testing
+
+The system includes a robust, end-to-end validation suite containing **88 assertions** across 12 different feature areas (including Edge Cases, Semantic Matching, and 10 diverse real-world candidate scenarios).
+
+To run the tests:
+```bash
+cd app
+python final_test.py
+```
+
+*Expected output: `Total Tests: 88 | Passed: 88 | Pass Rate: 100.0%`*
+=======
 # ▶️ Running the Application
 
 From the project root:
@@ -617,3 +765,4 @@ https://github.com/dakshsaini2
 The goal of ResumeAI is to build an intelligent and explainable resume screening system that combines traditional NLP techniques with semantic embeddings and machine learning to provide meaningful resume-job compatibility analysis.
 
 If you find the project useful, consider giving the repository a ⭐.
+>>>>>>> a97446b0897607cfac80ea1975a78e026040501f

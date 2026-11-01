@@ -1,0 +1,21 @@
+Metric,Value
+Overall MAE,0.131007
+Overall RMSE,0.160526
+Overall R²,0.076371
+Pearson r,0.343888
+Pearson p-value,3.95e-263
+Spearman ρ,0.389386
+Spearman p-value,0.00e+00
+Mean Residual,0.025206
+Std Residual,0.158535
+Residual Skewness,-0.715881
+Residual Kurtosis,0.302766
+Shapiro-Wilk Statistic,0.958134
+Shapiro-Wilk p-value,1.10e-35
+Over-predictions,3417
+Under-predictions,6127
+Exact predictions,0
+Total samples,9544
+Linear fit slope,0.165806
+Linear fit intercept,0.526056
+Linear fit r-value,0.343888

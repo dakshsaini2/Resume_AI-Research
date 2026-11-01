@@ -1,0 +1,69 @@
+Configuration,Family,Feature
+TF-IDF Only,Lexical,tfidf_similarity
+TF-IDF Only,Lexical,resume_length
+TF-IDF Only,Lexical,job_length
+TF-IDF Only,Lexical,resume_word_count
+TF-IDF Only,Lexical,job_word_count
+SBERT Only,Semantic,semantic_similarity
+SBERT Only,Semantic,resume_length
+SBERT Only,Semantic,job_length
+SBERT Only,Semantic,resume_word_count
+SBERT Only,Semantic,job_word_count
+Structured ATS Only,Structured,skill_match_score
+Structured ATS Only,Structured,education_match_score
+Structured ATS Only,Structured,experience_match_score
+Structured ATS Only,Structured,certification_match_score
+Structured ATS Only,Structured,candidate_skill_count
+Structured ATS Only,Structured,required_skill_count
+Structured ATS Only,Structured,skill_overlap_count
+Structured ATS Only,Structured,education_exact_match
+Structured ATS Only,Structured,resume_length
+Structured ATS Only,Structured,job_length
+Structured ATS Only,Structured,resume_word_count
+Structured ATS Only,Structured,job_word_count
+TF-IDF + SBERT,Lexical + Semantic,tfidf_similarity
+TF-IDF + SBERT,Lexical + Semantic,semantic_similarity
+TF-IDF + SBERT,Lexical + Semantic,resume_length
+TF-IDF + SBERT,Lexical + Semantic,job_length
+TF-IDF + SBERT,Lexical + Semantic,resume_word_count
+TF-IDF + SBERT,Lexical + Semantic,job_word_count
+TF-IDF + Structured ATS,Lexical + Structured,tfidf_similarity
+TF-IDF + Structured ATS,Lexical + Structured,skill_match_score
+TF-IDF + Structured ATS,Lexical + Structured,education_match_score
+TF-IDF + Structured ATS,Lexical + Structured,experience_match_score
+TF-IDF + Structured ATS,Lexical + Structured,certification_match_score
+TF-IDF + Structured ATS,Lexical + Structured,candidate_skill_count
+TF-IDF + Structured ATS,Lexical + Structured,required_skill_count
+TF-IDF + Structured ATS,Lexical + Structured,skill_overlap_count
+TF-IDF + Structured ATS,Lexical + Structured,education_exact_match
+TF-IDF + Structured ATS,Lexical + Structured,resume_length
+TF-IDF + Structured ATS,Lexical + Structured,job_length
+TF-IDF + Structured ATS,Lexical + Structured,resume_word_count
+TF-IDF + Structured ATS,Lexical + Structured,job_word_count
+SBERT + Structured ATS,Semantic + Structured,semantic_similarity
+SBERT + Structured ATS,Semantic + Structured,skill_match_score
+SBERT + Structured ATS,Semantic + Structured,education_match_score
+SBERT + Structured ATS,Semantic + Structured,experience_match_score
+SBERT + Structured ATS,Semantic + Structured,certification_match_score
+SBERT + Structured ATS,Semantic + Structured,candidate_skill_count
+SBERT + Structured ATS,Semantic + Structured,required_skill_count
+SBERT + Structured ATS,Semantic + Structured,skill_overlap_count
+SBERT + Structured ATS,Semantic + Structured,education_exact_match
+SBERT + Structured ATS,Semantic + Structured,resume_length
+SBERT + Structured ATS,Semantic + Structured,job_length
+SBERT + Structured ATS,Semantic + Structured,resume_word_count
+SBERT + Structured ATS,Semantic + Structured,job_word_count
+Full Hybrid,Lexical + Semantic + Structured,tfidf_similarity
+Full Hybrid,Lexical + Semantic + Structured,semantic_similarity
+Full Hybrid,Lexical + Semantic + Structured,skill_match_score
+Full Hybrid,Lexical + Semantic + Structured,education_match_score
+Full Hybrid,Lexical + Semantic + Structured,experience_match_score
+Full Hybrid,Lexical + Semantic + Structured,certification_match_score
+Full Hybrid,Lexical + Semantic + Structured,candidate_skill_count
+Full Hybrid,Lexical + Semantic + Structured,required_skill_count
+Full Hybrid,Lexical + Semantic + Structured,skill_overlap_count
+Full Hybrid,Lexical + Semantic + Structured,education_exact_match
+Full Hybrid,Lexical + Semantic + Structured,resume_length
+Full Hybrid,Lexical + Semantic + Structured,job_length
+Full Hybrid,Lexical + Semantic + Structured,resume_word_count
+Full Hybrid,Lexical + Semantic + Structured,job_word_count

@@ -1,0 +1,15 @@
+Check,Value,Status
+Dataset rows,9544.0,INFO
+Dataset columns,41.0,INFO
+Duplicate complete rows,0.0,PASS
+Unique resumes,344.0,INFO
+Unique job groups,28.0,INFO
+Unique resume-job pairs,9544.0,INFO
+Invalid target values,0.0,PASS
+Out-of-range targets,0.0,PASS
+Train/test job-group overlap,0.0,PASS
+Train/test resume overlap,344.0,WARNING
+Train/test job overlap,0.0,PASS
+Low-score target percentage,0.004295892707460184,INFO
+High-score target percentage,0.2389983235540654,INFO
+Mean within-job target std,0.13700723329008133,INFO

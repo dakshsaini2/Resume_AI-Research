@@ -1,0 +1,313 @@
+
+============================================================
+HIGH MATCH CASE (Sample 175)
+============================================================
+Predicted Score: 0.7556 (75.6%)
+Actual Score:    0.8500 (85.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Keyword Overlap (TF-IDF): value=0.0504, impact=+0.0947
+  + Job Description Length: value=224.0, impact=+0.0724
+  + Meaning Similarity (SBERT): value=0.3524, impact=+0.0023
+  + Education Match: value=1.0, impact=+0.0013
+  + Certification Match: value=0.0, impact=+0.0007
+
+Top factors that DECREASED the score:
+  - Candidate Skills Count: value=1.0, impact=-0.0249
+  - Job Word Count: value=28.0, impact=-0.0235
+  - Resume Text Length: value=444.0, impact=-0.0105
+  - Required Skills Count: value=3.0, impact=-0.0095
+  - Skill Match Ratio: value=0.0, impact=-0.0064
+
+------------------------------------------------------------
+High Match Case (Sample 178)
+------------------------------------------------------------
+Predicted Score: 0.5782 (57.8%)
+Actual Score:    0.8500 (85.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Job Word Count: value=8.0, impact=+0.0292
+  + Job Description Length: value=53.0, impact=+0.0063
+  + Candidate Skills Count: value=7.0, impact=+0.0058
+  + Resume Word Count: value=44.0, impact=+0.0022
+  + Education Match: value=1.0, impact=+0.0011
+
+Top factors that DECREASED the score:
+  - Keyword Overlap (TF-IDF): value=0.0, impact=-0.0521
+  - Required Skills Count: value=2.0, impact=-0.0315
+  - Skill Match Ratio: value=0.0, impact=-0.0189
+  - Resume Text Length: value=326.0, impact=-0.0162
+  - Meaning Similarity (SBERT): value=0.1756, impact=-0.0068
+
+------------------------------------------------------------
+High Match Case (Sample 16)
+------------------------------------------------------------
+Predicted Score: 0.6566 (65.7%)
+Actual Score:    0.8500 (85.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Resume Text Length: value=624.0, impact=+0.0289
+  + Meaning Similarity (SBERT): value=0.3424, impact=+0.0202
+  + Job Description Length: value=149.0, impact=+0.0189
+  + Resume Word Count: value=68.0, impact=+0.0021
+  + Exact Degree Match: value=0.0, impact=+0.0021
+
+Top factors that DECREASED the score:
+  - Keyword Overlap (TF-IDF): value=0.0, impact=-0.0309
+  - Required Skills Count: value=0.0, impact=-0.0235
+  - Candidate Skills Count: value=0.0, impact=-0.0096
+  - Skill Match Ratio: value=0.0, impact=-0.0075
+  - Certification Match: value=1.0, impact=-0.0050
+
+============================================================
+LOW MATCH CASE (Sample 496)
+============================================================
+Predicted Score: 0.4671 (46.7%)
+Actual Score:    0.2500 (25.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Meaning Similarity (SBERT): value=0.3324, impact=+0.0063
+  + Exact Degree Match: value=1.0, impact=+0.0002
+  + Education Match: value=1.0, impact=+0.0002
+  + Experience Match: value=0.0, impact=+0.0001
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=109.0, impact=-0.0574
+  - Keyword Overlap (TF-IDF): value=0.0, impact=-0.0565
+  - Resume Text Length: value=198.0, impact=-0.0359
+  - Skill Match Ratio: value=0.0, impact=-0.0200
+  - Required Skills Count: value=0.0, impact=-0.0128
+
+------------------------------------------------------------
+Low Match Case (Sample 401)
+------------------------------------------------------------
+Predicted Score: 0.6694 (66.9%)
+Actual Score:    0.1500 (15.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Keyword Overlap (TF-IDF): value=0.0233, impact=+0.0464
+  + Job Word Count: value=16.0, impact=+0.0087
+  + Meaning Similarity (SBERT): value=0.3289, impact=+0.0057
+  + Candidate Skills Count: value=10.0, impact=+0.0043
+  + Experience Match: value=0.0, impact=+0.0001
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=109.0, impact=-0.0228
+  - Skill Match Ratio: value=0.0, impact=-0.0130
+  - Resume Text Length: value=450.0, impact=-0.0068
+  - Certification Match: value=1.0, impact=-0.0062
+  - Required Skills Count: value=0.0, impact=-0.0056
+
+------------------------------------------------------------
+Low Match Case (Sample 319)
+------------------------------------------------------------
+Predicted Score: 0.6067 (60.7%)
+Actual Score:    0.2833 (28.3%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Job Word Count: value=12.0, impact=+0.0175
+  + Resume Text Length: value=571.0, impact=+0.0139
+  + Meaning Similarity (SBERT): value=0.2867, impact=+0.0026
+  + Education Match: value=1.0, impact=+0.0007
+  + Experience Match: value=1.0, impact=+0.0002
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=101.0, impact=-0.0416
+  - Candidate Skills Count: value=1.0, impact=-0.0144
+  - Required Skills Count: value=0.0, impact=-0.0129
+  - Keyword Overlap (TF-IDF): value=0.0151, impact=-0.0069
+  - Certification Match: value=1.0, impact=-0.0068
+
+============================================================
+MEDIAN MATCH CASE (Sample 398)
+============================================================
+Predicted Score: 0.6752 (67.5%)
+Actual Score:    0.6833 (68.3%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Meaning Similarity (SBERT): value=0.4487, impact=+0.0419
+  + Job Description Length: value=179.0, impact=+0.0258
+  + Keyword Overlap (TF-IDF): value=0.0126, impact=+0.0223
+  + Resume Word Count: value=26.0, impact=+0.0028
+  + Experience Match: value=0.0, impact=+0.0014
+
+Top factors that DECREASED the score:
+  - Resume Text Length: value=213.0, impact=-0.0289
+  - Required Skills Count: value=1.0, impact=-0.0210
+  - Candidate Skills Count: value=3.0, impact=-0.0142
+  - Skill Match Ratio: value=0.0, impact=-0.0114
+  - Job Word Count: value=24.0, impact=-0.0029
+
+------------------------------------------------------------
+Median Match Case (Sample 60)
+------------------------------------------------------------
+Predicted Score: 0.6810 (68.1%)
+Actual Score:    0.6833 (68.3%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Keyword Overlap (TF-IDF): value=0.0714, impact=+0.1038
+  + Meaning Similarity (SBERT): value=0.3898, impact=+0.0075
+  + Job Word Count: value=18.0, impact=+0.0033
+  + Education Match: value=1.0, impact=+0.0009
+  + Certification Match: value=0.0, impact=+0.0002
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=95.0, impact=-0.0286
+  - Resume Text Length: value=357.0, impact=-0.0233
+  - Skill Match Ratio: value=0.0, impact=-0.0139
+  - Required Skills Count: value=3.0, impact=-0.0128
+  - Candidate Skills Count: value=7.0, impact=-0.0113
+
+------------------------------------------------------------
+Median Match Case (Sample 61)
+------------------------------------------------------------
+Predicted Score: 0.6897 (69.0%)
+Actual Score:    0.6833 (68.3%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Resume Text Length: value=608.0, impact=+0.0287
+  + Job Word Count: value=10.0, impact=+0.0217
+  + Job Description Length: value=53.0, impact=+0.0151
+  + Meaning Similarity (SBERT): value=0.1634, impact=+0.0039
+  + Exact Degree Match: value=1.0, impact=+0.0005
+
+Top factors that DECREASED the score:
+  - Candidate Skills Count: value=0.0, impact=-0.0203
+  - Skill Match Ratio: value=0.0, impact=-0.0096
+  - Certification Match: value=1.0, impact=-0.0059
+  - Resume Word Count: value=65.0, impact=-0.0035
+  - Required Skills Count: value=0.0, impact=-0.0033
+
+============================================================
+WORST OVER-PREDICTION (Sample 401)
+============================================================
+Predicted Score: 0.6694 (66.9%)
+Actual Score:    0.1500 (15.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Keyword Overlap (TF-IDF): value=0.0233, impact=+0.0464
+  + Job Word Count: value=16.0, impact=+0.0087
+  + Meaning Similarity (SBERT): value=0.3289, impact=+0.0057
+  + Candidate Skills Count: value=10.0, impact=+0.0043
+  + Experience Match: value=0.0, impact=+0.0001
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=109.0, impact=-0.0228
+  - Skill Match Ratio: value=0.0, impact=-0.0130
+  - Resume Text Length: value=450.0, impact=-0.0068
+  - Certification Match: value=1.0, impact=-0.0062
+  - Required Skills Count: value=0.0, impact=-0.0056
+
+------------------------------------------------------------
+Worst Over-Prediction (Sample 476)
+------------------------------------------------------------
+Predicted Score: 0.6741 (67.4%)
+Actual Score:    0.2333 (23.3%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Keyword Overlap (TF-IDF): value=0.0297, impact=+0.0407
+  + Resume Text Length: value=640.0, impact=+0.0215
+  + Meaning Similarity (SBERT): value=0.4344, impact=+0.0209
+  + Candidate Skills Count: value=7.0, impact=+0.0022
+  + Job Word Count: value=16.0, impact=+0.0017
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=109.0, impact=-0.0532
+  - Skill Match Ratio: value=0.0, impact=-0.0105
+  - Resume Word Count: value=85.0, impact=-0.0058
+  - Certification Match: value=1.0, impact=-0.0047
+  - Exact Degree Match: value=0.0, impact=-0.0022
+
+------------------------------------------------------------
+Worst Over-Prediction (Sample 29)
+------------------------------------------------------------
+Predicted Score: 0.7169 (71.7%)
+Actual Score:    0.2967 (29.7%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Keyword Overlap (TF-IDF): value=0.0768, impact=+0.0562
+  + Meaning Similarity (SBERT): value=0.5269, impact=+0.0271
+  + Resume Text Length: value=745.0, impact=+0.0245
+  + Job Description Length: value=179.0, impact=+0.0042
+  + Education Match: value=1.0, impact=+0.0011
+
+Top factors that DECREASED the score:
+  - Candidate Skills Count: value=2.0, impact=-0.0271
+  - Required Skills Count: value=1.0, impact=-0.0172
+  - Skill Match Ratio: value=0.0, impact=-0.0062
+  - Certification Match: value=1.0, impact=-0.0042
+  - Job Word Count: value=24.0, impact=-0.0032
+
+============================================================
+WORST UNDER-PREDICTION (Sample 261)
+============================================================
+Predicted Score: 0.4496 (45.0%)
+Actual Score:    0.8500 (85.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Resume Text Length: value=551.0, impact=+0.0053
+  + Job Word Count: value=16.0, impact=+0.0050
+  + Certification Match: value=0.0, impact=+0.0024
+  + Experience Match: value=0.0, impact=+0.0001
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=115.0, impact=-0.0861
+  - Keyword Overlap (TF-IDF): value=0.0, impact=-0.0496
+  - Required Skills Count: value=3.0, impact=-0.0381
+  - Meaning Similarity (SBERT): value=0.1425, impact=-0.0265
+  - Skill Match Ratio: value=0.0, impact=-0.0178
+
+------------------------------------------------------------
+Worst Under-Prediction (Sample 11)
+------------------------------------------------------------
+Predicted Score: 0.4550 (45.5%)
+Actual Score:    0.8500 (85.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Resume Word Count: value=35.0, impact=+0.0047
+  + Education Match: value=1.0, impact=+0.0027
+  + Certification Match: value=0.0, impact=+0.0016
+  + Candidate Skills Count: value=3.0, impact=+0.0016
+  + Exact Degree Match: value=1.0, impact=+0.0009
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=115.0, impact=-0.0923
+  - Required Skills Count: value=3.0, impact=-0.0385
+  - Meaning Similarity (SBERT): value=0.1566, impact=-0.0322
+  - Keyword Overlap (TF-IDF): value=0.0059, impact=-0.0183
+  - Resume Text Length: value=283.0, impact=-0.0171
+
+------------------------------------------------------------
+Worst Under-Prediction (Sample 119)
+------------------------------------------------------------
+Predicted Score: 0.4967 (49.7%)
+Actual Score:    0.8500 (85.0%)
+Base Score:      0.6616
+
+Top factors that INCREASED the score:
+  + Resume Text Length: value=499.0, impact=+0.0117
+  + Resume Word Count: value=59.0, impact=+0.0088
+  + Job Word Count: value=16.0, impact=+0.0045
+  + Certification Match: value=0.0, impact=+0.0024
+  + Experience Match: value=0.0, impact=+0.0001
+
+Top factors that DECREASED the score:
+  - Job Description Length: value=115.0, impact=-0.0820
+  - Required Skills Count: value=3.0, impact=-0.0357
+  - Keyword Overlap (TF-IDF): value=0.0, impact=-0.0355
+  - Skill Match Ratio: value=0.0, impact=-0.0147
+  - Candidate Skills Count: value=0.0, impact=-0.0113

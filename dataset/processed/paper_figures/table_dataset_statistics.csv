@@ -1,0 +1,13 @@
+Statistic,Value
+Total samples,9544
+Total columns,35
+Unique job groups,28
+Target variable,matched_score
+Target min,0.0
+Target max,0.97
+Target mean,0.6608
+Target std,0.167
+Target median,0.6833
+Model,RandomForestRegressor
+Number of features,14
+Embedding model,all-MiniLM-L6-v2

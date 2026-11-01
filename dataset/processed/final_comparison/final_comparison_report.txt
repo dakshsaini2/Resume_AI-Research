@@ -1,0 +1,54 @@
+FINAL EXPERIMENTAL COMPARISON REPORT
+======================================================================
+
+1. EXPERIMENT STATUS
+----------------------------------------------------------------------
+Experiment 1: Baseline Comparison — Completed
+Experiment 2: Ablation Study — Completed
+Experiment 3: Robustness Evaluation — Completed
+Experiment 4: SHAP Explainability — Completed
+Experiment 5: Candidate Ranking — Completed
+Experiment 6: Error Analysis — Completed
+Experiment 7: Dataset Validation — Completed
+Experiment 8: Candidate-Level Evaluation — Completed
+Experiment 9: Final Experimental Comparison — Completed
+
+2. UNSEEN-CANDIDATE RESULTS
+----------------------------------------------------------------------
+Hybrid: MAE=0.0935, RMSE=0.1230, R2=0.4563, NDCG@5=0.8739, NDCG@10=0.8772, MRR=0.8049
+Structured ATS: MAE=0.1028, RMSE=0.1361, R2=0.3338, NDCG@5=0.8054, NDCG@10=0.8168, MRR=0.6875
+TF-IDF Only: MAE=0.1441, RMSE=0.1845, R2=-0.2244, NDCG@5=0.7973, NDCG@10=0.8054, MRR=0.6528
+SBERT Only: MAE=0.1589, RMSE=0.2007, R2=-0.4494, NDCG@5=0.7454, NDCG@10=0.7569, MRR=0.5571
+
+3. BEST MODELS
+----------------------------------------------------------------------
+MAE: Hybrid (0.0935)
+RMSE: Hybrid (0.1230)
+R2: Hybrid (0.4563)
+NDCG@5: Hybrid (0.8739)
+NDCG@10: Hybrid (0.8772)
+MRR: Hybrid (0.8049)
+
+4. TOP SHAP FEATURES
+----------------------------------------------------------------------
+tfidf_similarity: 0.033406
+job_length: 0.031716
+resume_length: 0.021501
+semantic_similarity: 0.016733
+required_skill_count: 0.015955
+skill_match_score: 0.014032
+job_word_count: 0.012859
+candidate_skill_count: 0.012643
+resume_word_count: 0.004553
+certification_match_score: 0.003598
+
+5. RESEARCH CONCLUSION
+----------------------------------------------------------------------
+The Hybrid model demonstrates promising generalization performance under candidate-level grouped evaluation.
+Candidate-level grouped evaluation is treated as the primary evidence for unseen-candidate generalization.
+Job-group evaluation provides complementary evidence for generalization across job groups.
+SHAP analysis provides feature-level explanations for the Random Forest predictions.
+
+6. IMPORTANT LIMITATION
+----------------------------------------------------------------------
+The dataset contains repeated candidate/resume representations across multiple job records. Therefore, row-level evaluation can overestimate generalization performance. Candidate-grouped evaluation should be emphasized in the research paper.

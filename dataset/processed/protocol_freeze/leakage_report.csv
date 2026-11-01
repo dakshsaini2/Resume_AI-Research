@@ -1,0 +1,6 @@
+Check,Result,Details
+Job group overlap between train/test,PASS,No groups appear in both sets
+Candidate text overlap between train/test,WARNING,344 candidate texts appear in both train and test
+Job text overlap between train/test,PASS,No job texts shared
+Target distribution similarity,PASS,"Train mean: 0.6627, Test mean: 0.6540, Difference: 0.0086"
+Near-duplicate resumes detected,PASS,No near-duplicate resume pairs found.

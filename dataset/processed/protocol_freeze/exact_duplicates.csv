@@ -1,0 +1,5 @@
+Check,Count,Percentage
+Exact duplicate rows,0,0.0
+Duplicate candidate texts,9544,100.0
+Duplicate job texts,9544,100.0
+Duplicate resume-job pairs,0,0.0

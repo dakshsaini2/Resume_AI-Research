@@ -1,0 +1,4 @@
+job_title,original_score,unconstrained_score,unconstrained_faithful,unconstrained_hallucinations,preserving_score,preserving_faithful,preserving_hallucinations,optimization_gain_unconstrained,optimization_gain_preserving
+HR Officer,30.48,43.23,False,5,43.56,True,0,12.749999999999996,13.080000000000002
+Mechanical Engineer,24.63,40.23,False,10,28.47,False,2,15.599999999999998,3.84
+AI Engineer,59.35,82.75,False,3,60.23,True,0,23.4,0.8799999999999955

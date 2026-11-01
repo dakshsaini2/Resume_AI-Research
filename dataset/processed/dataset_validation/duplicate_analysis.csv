@@ -1,0 +1,5 @@
+Metric,Count,Percentage
+Duplicate complete rows,0,0.0
+Repeated resume rows,9200,96.39564124057
+Repeated job rows,9516,99.70662196144174
+Repeated resume-job pairs,0,0.0

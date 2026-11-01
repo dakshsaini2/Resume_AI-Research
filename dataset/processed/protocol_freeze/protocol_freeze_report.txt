@@ -1,0 +1,85 @@
+======================================================================
+EXPERIMENT 10: PROTOCOL FREEZE REPORT
+Generated: 2026-10-01T00:11:22.329104
+======================================================================
+
+--- Dataset ---
+File: Resume_Data_For_Ranking.csv
+SHA-256: 31a3b4a40bda419908be9e0702b1d87d766887606a696b8312df742f485bfefe
+Rows: 9544
+Columns: 38
+
+--- Official Group Split ---
+Split method: GroupShuffleSplit
+Test ratio: 0.2
+Random state: 42
+Training groups: 22
+Testing groups: 6
+Group overlap: 0
+Training samples: 7497
+Testing samples: 2047
+
+TRAIN groups:
+  - asst. manager/ manger (administrative) (341 samples)
+  - business development executive (341 samples)
+  - civil engineer (342 samples)
+  - data engineer (340 samples)
+  - data science engineer (340 samples)
+  - database administrator (dba) (341 samples)
+  - devops engineer (340 samples)
+  - executive/ sr. executive -it (340 samples)
+  - full stack developer (python,react js) (340 samples)
+  - hr officer (342 samples)
+  - intern (generative ai engineering - 2d/3d image generation) (340 samples)
+  - machine learning (ml) engineer (340 samples)
+  - management trainee - mechanical (341 samples)
+  - manager- human resource management (hrm) (341 samples)
+  - marketing officer (341 samples)
+  - mechanical designer (341 samples)
+  - mechanical engineer (341 samples)
+  - project coordinator (civil) (342 samples)
+  - senior ios engineer (340 samples)
+  - senior software engineer (341 samples)
+  - sr.officer / executive - internal audit (341 samples)
+  - system administrator (operation & maintenance of server, storage & service desk system) (341 samples)
+
+TEST groups:
+  - ai engineer (341 samples)
+  - executive - vat (341 samples)
+  - executive/ senior executive- trade marketing, hygiene products (341 samples)
+  - head of internal control & compliance (icc) - sevp/dmd (341 samples)
+  - network support engineer (341 samples)
+  - site engineer (342 samples)
+
+--- Exact Duplicate Analysis ---
+Exact duplicate rows: 0
+Duplicate candidate texts: 9544
+Duplicate job texts: 9544
+Duplicate resume-job pairs: 0
+
+--- Near-Duplicate Analysis ---
+Near-duplicate threshold: 0.95
+Near-duplicate resume pairs: 0
+Near-duplicate job pairs: 0
+
+--- Leakage Report ---
+  [PASS] Job group overlap between train/test: No groups appear in both sets
+  [WARNING] Candidate text overlap between train/test: 344 candidate texts appear in both train and test
+  [PASS] Job text overlap between train/test: No job texts shared
+  [PASS] Target distribution similarity: Train mean: 0.6627, Test mean: 0.6540, Difference: 0.0086
+  [PASS] Near-duplicate resumes detected: No near-duplicate resume pairs found.
+
+--- Reproducibility Requirements ---
+1. This dataset hash must be verified before running final experiments.
+2. The official group split above must be used for ALL final comparisons.
+3. Random split may be used as a secondary experiment, clearly labeled.
+4. TF-IDF must be fitted ONLY on training data in each experiment.
+5. All random seeds must be set to 42.
+
+--- Score Interpretation Warning ---
+The predicted match score is a regression estimate, NOT a probability.
+Do NOT interpret scores as calibrated likelihoods without calibration analysis.
+
+======================================================================
+END OF PROTOCOL FREEZE REPORT
+======================================================================

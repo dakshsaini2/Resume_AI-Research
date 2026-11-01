@@ -1,0 +1,89 @@
+Experiment,Feature
+Full Hybrid,tfidf_similarity
+Full Hybrid,semantic_similarity
+Full Hybrid,skill_match_score
+Full Hybrid,candidate_skill_count
+Full Hybrid,required_skill_count
+Full Hybrid,skill_overlap_count
+Full Hybrid,education_match_score
+Full Hybrid,education_exact_match
+Full Hybrid,experience_match_score
+Full Hybrid,certification_match_score
+Full Hybrid,resume_length
+Full Hybrid,job_length
+Full Hybrid,resume_word_count
+Full Hybrid,job_word_count
+Hybrid - TF-IDF,semantic_similarity
+Hybrid - TF-IDF,skill_match_score
+Hybrid - TF-IDF,candidate_skill_count
+Hybrid - TF-IDF,required_skill_count
+Hybrid - TF-IDF,skill_overlap_count
+Hybrid - TF-IDF,education_match_score
+Hybrid - TF-IDF,education_exact_match
+Hybrid - TF-IDF,experience_match_score
+Hybrid - TF-IDF,certification_match_score
+Hybrid - TF-IDF,resume_length
+Hybrid - TF-IDF,job_length
+Hybrid - TF-IDF,resume_word_count
+Hybrid - TF-IDF,job_word_count
+Hybrid - SBERT,tfidf_similarity
+Hybrid - SBERT,skill_match_score
+Hybrid - SBERT,candidate_skill_count
+Hybrid - SBERT,required_skill_count
+Hybrid - SBERT,skill_overlap_count
+Hybrid - SBERT,education_match_score
+Hybrid - SBERT,education_exact_match
+Hybrid - SBERT,experience_match_score
+Hybrid - SBERT,certification_match_score
+Hybrid - SBERT,resume_length
+Hybrid - SBERT,job_length
+Hybrid - SBERT,resume_word_count
+Hybrid - SBERT,job_word_count
+Hybrid - Skills,tfidf_similarity
+Hybrid - Skills,semantic_similarity
+Hybrid - Skills,education_match_score
+Hybrid - Skills,education_exact_match
+Hybrid - Skills,experience_match_score
+Hybrid - Skills,certification_match_score
+Hybrid - Skills,resume_length
+Hybrid - Skills,job_length
+Hybrid - Skills,resume_word_count
+Hybrid - Skills,job_word_count
+Hybrid - Education,tfidf_similarity
+Hybrid - Education,semantic_similarity
+Hybrid - Education,skill_match_score
+Hybrid - Education,candidate_skill_count
+Hybrid - Education,required_skill_count
+Hybrid - Education,skill_overlap_count
+Hybrid - Education,experience_match_score
+Hybrid - Education,certification_match_score
+Hybrid - Education,resume_length
+Hybrid - Education,job_length
+Hybrid - Education,resume_word_count
+Hybrid - Education,job_word_count
+Hybrid - Experience,tfidf_similarity
+Hybrid - Experience,semantic_similarity
+Hybrid - Experience,skill_match_score
+Hybrid - Experience,candidate_skill_count
+Hybrid - Experience,required_skill_count
+Hybrid - Experience,skill_overlap_count
+Hybrid - Experience,education_match_score
+Hybrid - Experience,education_exact_match
+Hybrid - Experience,certification_match_score
+Hybrid - Experience,resume_length
+Hybrid - Experience,job_length
+Hybrid - Experience,resume_word_count
+Hybrid - Experience,job_word_count
+Hybrid - Certification,tfidf_similarity
+Hybrid - Certification,semantic_similarity
+Hybrid - Certification,skill_match_score
+Hybrid - Certification,candidate_skill_count
+Hybrid - Certification,required_skill_count
+Hybrid - Certification,skill_overlap_count
+Hybrid - Certification,education_match_score
+Hybrid - Certification,education_exact_match
+Hybrid - Certification,experience_match_score
+Hybrid - Certification,resume_length
+Hybrid - Certification,job_length
+Hybrid - Certification,resume_word_count
+Hybrid - Certification,job_word_count

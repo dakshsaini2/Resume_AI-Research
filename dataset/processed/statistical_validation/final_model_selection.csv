@@ -1,0 +1,11 @@
+Metric,Winner,Paired_t_p,Wilcoxon_p,Bonferroni_Significant,Effect_Size
+MAE,Hybrid better,0.002644856980145162,0.0625,True,Large
+RMSE,Hybrid better,0.0024254296512548914,0.0625,True,Large
+R2,Hybrid better,0.0026203449312171465,0.0625,True,Large
+NDCG@1,Hybrid better,0.010854067002746262,0.0625,False,Large
+NDCG@3,Hybrid better,0.0031743220949253916,0.0625,True,Large
+NDCG@5,Hybrid better,0.004737070799989845,0.0625,True,Large
+NDCG@10,Hybrid better,0.003369428721324291,0.0625,True,Large
+MRR,Hybrid better,0.014885273478204087,0.0625,False,Large
+Precision@3,Hybrid better,0.006907989337280137,0.0625,False,Large
+Recall@3,Hybrid better,0.005359491201374832,0.0625,False,Large

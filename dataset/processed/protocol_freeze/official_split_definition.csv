@@ -1,0 +1,29 @@
+Job_Group,Split,Sample_Count
+asst. manager/ manger (administrative),TRAIN,341
+business development executive,TRAIN,341
+civil engineer,TRAIN,342
+data engineer,TRAIN,340
+data science engineer,TRAIN,340
+database administrator (dba),TRAIN,341
+devops engineer,TRAIN,340
+executive/ sr. executive -it,TRAIN,340
+"full stack developer (python,react js)",TRAIN,340
+hr officer,TRAIN,342
+intern (generative ai engineering - 2d/3d image generation),TRAIN,340
+machine learning (ml) engineer,TRAIN,340
+management trainee - mechanical,TRAIN,341
+manager- human resource management (hrm),TRAIN,341
+marketing officer,TRAIN,341
+mechanical designer,TRAIN,341
+mechanical engineer,TRAIN,341
+project coordinator (civil),TRAIN,342
+senior ios engineer,TRAIN,340
+senior software engineer,TRAIN,341
+sr.officer / executive - internal audit,TRAIN,341
+"system administrator (operation & maintenance of server, storage & service desk system)",TRAIN,341
+ai engineer,TEST,341
+executive - vat,TEST,341
+"executive/ senior executive- trade marketing, hygiene products",TEST,341
+head of internal control & compliance (icc) - sevp/dmd,TEST,341
+network support engineer,TEST,341
+site engineer,TEST,342

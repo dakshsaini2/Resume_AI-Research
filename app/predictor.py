@@ -15,6 +15,7 @@ from config import (
     EXCELLENT_MATCH,
     STRONG_MATCH,
     MODERATE_MATCH,
+    SCORING_WEIGHTS,
 )
 
 from feature_engineering import generate_features
@@ -144,16 +145,10 @@ def predict_resume_score(
         model.predict(X_scaled)[0]
     )
 
-
-    # ======================================================
-    # CLAMP MODEL SCORE
-    # ======================================================
-
     model_score = max(
         0.0,
         min(model_score, 1.0)
     )
-
 
     model_percentage = round(
         model_score * 100,
@@ -162,25 +157,46 @@ def predict_resume_score(
 
 
     # ======================================================
-    # RULE-BASED ATS ANALYSIS
+    # HYBRID WEIGHTED SCORING
     # ======================================================
     #
-    # This does NOT replace the trained model.
+    # The trained RF model alone produces scores in a
+    # narrow 76-80% band regardless of match quality.
     #
-    # It provides transparent recruiter-facing signals.
+    # This hybrid system uses the correctly-working
+    # feature extractions (skills, education, experience,
+    # SBERT, TF-IDF) as the primary scoring mechanism,
+    # with the model retained as a minor signal.
     #
+    # ======================================================
+
+    w = SCORING_WEIGHTS
+
+    hybrid_score = (
+        skill_match_score           * 100 * w["skill_match"]
+        + semantic_similarity       * 100 * w["semantic_similarity"]
+        + experience_match_score    * 100 * w["experience_match"]
+        + education_match_score     * 100 * w["education_match"]
+        + tfidf_similarity          * 100 * w["tfidf_similarity"]
+        + certification_match_score * 100 * w["certification_match"]
+        + model_percentage                * w["model_prediction"]
+    )
+
+    percentage = round(
+        max(0.0, min(hybrid_score, 100.0)),
+        2
+    )
+
+
+    # ======================================================
+    # RULE-BASED STATUS SIGNALS
     # ======================================================
 
     if required_experience <= 0:
-
         experience_status = "Not Required"
-
     elif candidate_experience >= required_experience:
-
         experience_status = "Meets Requirement"
-
     else:
-
         experience_status = "Below Requirement"
 
 
@@ -198,20 +214,16 @@ def predict_resume_score(
 
 
     if required_certifications:
-
         certification_status = (
             "Meets Requirement"
             if certification_match_score >= 1.0
             else "Partial Match"
         )
-
     else:
-
         certification_status = "Not Required"
 
 
     if required_skills:
-
         skill_status = (
             "Strong"
             if skill_match_score >= 0.75
@@ -221,45 +233,32 @@ def predict_resume_score(
             else
             "Weak"
         )
-
     else:
-
         skill_status = "Not Specified"
 
 
     # ======================================================
     # FINAL RECOMMENDATION
     # ======================================================
-    #
-    # IMPORTANT:
-    #
-    # The final ATS percentage remains the trained
-    # Random Forest prediction.
-    #
-    # The additional rule-based signals are returned
-    # separately so we don't silently change the
-    # behavior of your trained model.
-    #
-    # ======================================================
 
-    percentage = model_percentage
+    percentage = percentage
 
 
     if percentage >= EXCELLENT_MATCH:
 
-        recommendation = "🌟 Excellent Match"
+        recommendation = "Excellent Match"
 
     elif percentage >= STRONG_MATCH:
 
-        recommendation = "🟢 Strong Match"
+        recommendation = "Strong Match"
 
     elif percentage >= MODERATE_MATCH:
 
-        recommendation = "🟡 Moderate Match"
+        recommendation = "Moderate Match"
 
     else:
 
-        recommendation = "🔴 Weak Match"
+        recommendation = "Weak Match"
 
 
     # ======================================================

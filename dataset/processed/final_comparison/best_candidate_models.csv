@@ -1,0 +1,7 @@
+Metric,Direction,Best_Model,Value
+MAE,Lower is better,Hybrid,0.0934530524672245
+RMSE,Lower is better,Hybrid,0.1229552563134049
+R2,Higher is better,Hybrid,0.4562920623410249
+NDCG@5,Higher is better,Hybrid,0.8739348110400773
+NDCG@10,Higher is better,Hybrid,0.8771874462078267
+MRR,Higher is better,Hybrid,0.804940476190476

@@ -65,6 +65,23 @@ FEATURE_COLUMNS = [
 EXCELLENT_MATCH = 90
 STRONG_MATCH = 75
 MODERATE_MATCH = 60
+
+# ==========================================================
+# HYBRID SCORING WEIGHTS
+# ==========================================================
+# These weights control how the final ATS score is computed.
+# They must sum to 1.0.
+# ==========================================================
+
+SCORING_WEIGHTS = {
+    "skill_match":          0.35,   # Most critical — do skills match?
+    "semantic_similarity":  0.20,   # Contextual meaning overlap (SBERT)
+    "experience_match":     0.15,   # Does candidate meet exp requirements?
+    "education_match":      0.10,   # Degree requirement check
+    "tfidf_similarity":     0.10,   # Raw keyword overlap
+    "certification_match":  0.05,   # Nice-to-have certifications
+    "model_prediction":     0.05,   # Retained RF model as minor signal
+}
 # ==========================================================
 # DEGREE NORMALIZATION & HIERARCHY
 # ==========================================================

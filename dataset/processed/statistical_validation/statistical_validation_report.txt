@@ -1,0 +1,44 @@
+EXPERIMENT 10 — STATISTICAL VALIDATION REPORT
+======================================================================
+
+PRIMARY COMPARISON
+Hybrid vs Structured ATS
+
+EVALUATION SETTING
+5-fold candidate-level grouped evaluation
+Each fold evaluates candidates not present in the corresponding training fold.
+
+REGRESSION RESULTS
+----------------------------------------------------------------------
+MAE: Hybrid=0.093453, Structured ATS=0.102783, p(t)=0.002645, p(W)=0.062500, Cohen's d=-2.9770, Hybrid better
+RMSE: Hybrid=0.122955, Structured ATS=0.136078, p(t)=0.002425, p(W)=0.062500, Cohen's d=-3.0470, Hybrid better
+R2: Hybrid=0.456292, Structured ATS=0.333791, p(t)=0.002620, p(W)=0.062500, Cohen's d=2.9845, Hybrid better
+
+RANKING RESULTS
+----------------------------------------------------------------------
+NDCG@1: Hybrid=0.855317, Structured ATS=0.779968, p(t)=0.010854, p(W)=0.062500, Cohen's d=2.0108, Hybrid better
+NDCG@3: Hybrid=0.872319, Structured ATS=0.796716, p(t)=0.003174, p(W)=0.062500, Cohen's d=2.8342, Hybrid better
+NDCG@5: Hybrid=0.873935, Structured ATS=0.805441, p(t)=0.004737, p(W)=0.062500, Cohen's d=2.5409, Hybrid better
+NDCG@10: Hybrid=0.877187, Structured ATS=0.816796, p(t)=0.003369, p(W)=0.062500, Cohen's d=2.7888, Hybrid better
+MRR: Hybrid=0.804940, Structured ATS=0.687540, p(t)=0.014885, p(W)=0.062500, Cohen's d=1.8324, Hybrid better
+Precision@3: Hybrid=0.692857, Structured ATS=0.504762, p(t)=0.006908, p(W)=0.062500, Cohen's d=2.2877, Hybrid better
+Recall@3: Hybrid=0.103911, Structured ATS=0.074688, p(t)=0.005359, p(W)=0.062500, Cohen's d=2.4557, Hybrid better
+
+MULTIPLE-COMPARISON CORRECTION
+----------------------------------------------------------------------
+Bonferroni alpha = 0.005000
+
+FINAL MODEL
+----------------------------------------------------------------------
+Hybrid
+
+Hybrid is selected as the final model because it simultaneously achieves lower MAE, lower RMSE, higher R² and higher NDCG@5 on the unseen-candidate evaluation.
+
+INTERPRETATION
+----------------------------------------------------------------------
+Statistical tests are based on paired fold-level measurements. The candidate-level grouped split is treated as the primary evaluation because it tests generalization to unseen candidates.
+A statistically significant p-value indicates evidence of a difference between the two models across folds, but practical importance should also be considered using effect size and confidence intervals.
+
+IMPORTANT LIMITATION
+----------------------------------------------------------------------
+Only five candidate-level folds are available. Therefore, statistical conclusions should be described as evidence of improvement rather than universal proof of superiority.

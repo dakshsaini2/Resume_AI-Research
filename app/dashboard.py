@@ -8,20 +8,22 @@ so nothing renders as raw code.
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import joblib
 
-from charts import score_gauge
-from dashboard_skills import skills_section
 from report import generate_pdf
 
 from config import MODEL_FILE, FEATURE_COLUMNS
 
 
 # ==========================================================
-# LOAD TRAINED MODEL
+# LOAD TRAINED MODEL & SCALER
 # ==========================================================
 
 model = joblib.load(MODEL_FILE)
+
+from predictor import scaler
+
 
 
 # ==========================================================
@@ -40,8 +42,274 @@ def _score_color(pct):
 
 
 # ==========================================================
+# EXPLAINABLE AI HELPER
+# ==========================================================
+
+@st.cache_resource
+def get_shap_explainer():
+    import shap
+    return shap.TreeExplainer(model)
+
+
+# ==========================================================
 # SHOW DASHBOARD
 # ==========================================================
+
+
+# --- Merged from charts.py ---
+def score_gauge(score):
+
+    fig = go.Figure(
+        go.Indicator(
+            mode="gauge+number",
+            value=score,
+
+            number={
+                "suffix": "%",
+                "font": {
+                    "size": 48,
+                    "color": "#0A1628",
+                    "family": "Inter, sans-serif",
+                }
+            },
+
+            title={
+                "text": "ATS Match Score",
+                "font": {
+                    "size": 22,
+                    "color": "#475569",
+                    "family": "Inter, sans-serif",
+                }
+            },
+
+            gauge={
+                "axis": {
+                    "range": [0, 100],
+                    "tickcolor": "#94A3B8",
+                    "tickwidth": 1,
+                    "dtick": 20,
+                    "tickfont": {"color": "#64748B", "size": 12},
+                },
+
+                "bar": {
+                    "color": "#0077B6",
+                    "thickness": 0.75,
+                },
+
+                "bgcolor": "#F1F5F9",
+                "borderwidth": 0,
+
+                "steps": [
+                    {"range": [0, 40],  "color": "#FEE2E2"},
+                    {"range": [40, 60], "color": "#FEF3C7"},
+                    {"range": [60, 75], "color": "#FEF9C3"},
+                    {"range": [75, 90], "color": "#D1FAE5"},
+                    {"range": [90, 100],"color": "#DBEAFE"},
+                ],
+
+                "threshold": {
+                    "line": {"color": "#0077B6", "width": 3},
+                    "thickness": 0.8,
+                    "value": score,
+                },
+            }
+        )
+    )
+
+    fig.update_layout(
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
+        height=380,
+        font=dict(
+            color="#0A1628",
+            size=14,
+            family="Inter, sans-serif",
+        ),
+        margin=dict(t=40, b=20, l=40, r=40),
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True,
+    )
+
+# --- Merged from dashboard_skills.py ---
+def skills_section(matched_skills, missing_skills):
+
+    st.divider()
+
+    # ======================================================
+    # COUNTS
+    # ======================================================
+
+    matched_count = len(matched_skills)
+    missing_count = len(missing_skills)
+    total = matched_count + missing_count
+    percentage = round(matched_count / total * 100, 1) if total > 0 else 0
+
+    # ======================================================
+    # BUILD SKILL CHIPS HTML
+    # ======================================================
+
+    matched_chips_html = ""
+    for skill in matched_skills:
+        matched_chips_html += (
+            f'<span class="skill-chip skill-match">✓ {skill.title()}</span>'
+        )
+
+    missing_chips_html = ""
+    for skill in missing_skills:
+        missing_chips_html += (
+            f'<span class="skill-chip skill-missing">+ {skill.title()}</span>'
+        )
+
+    if not matched_chips_html:
+        matched_chips_html = (
+            '<p style="color:#9CA3AF;font-size:14px;margin:10px 0;">'
+            'No matching skills found.</p>'
+        )
+
+    if not missing_chips_html:
+        missing_chips_html = (
+            '<p style="color:#065F46;font-size:14px;font-weight:600;margin:10px 0;">'
+            '🎉 No required skills are missing!</p>'
+        )
+
+    # ======================================================
+    # HEADER + SUMMARY CARDS
+    # ======================================================
+
+    st.html(f"""
+    <div style="margin-bottom:6px;">
+        <div style="
+            font-size: 26px;
+            font-weight: 800;
+            color: #0F172A;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        ">Skills Analysis</div>
+        <div style="font-size:14px;color:#6B7280;font-weight:500;">
+            Compare candidate skills with the requirements of the target job.
+        </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:20px 0 24px;">
+
+        <div class="metric-card">
+            <div class="metric-label">Matched Skills</div>
+            <div class="metric-value">{matched_count}</div>
+            <div class="metric-description">Skills in both resume and job</div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-label">Missing Skills</div>
+            <div class="metric-value">{missing_count}</div>
+            <div class="metric-description">Required skills not found</div>
+        </div>
+
+        <div class="metric-card">
+            <div class="metric-label">Skill Match</div>
+            <div class="metric-value">{percentage}%</div>
+            <div class="metric-description">Overall required skill coverage</div>
+        </div>
+
+    </div>
+
+    <!-- SKILL CARDS SIDE BY SIDE -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+        <div class="skills-container">
+            <div style="
+                display:inline-block;
+                background-color:#ECFDF5;
+                color:#065F46;
+                font-size:14px;
+                font-weight:700;
+                padding:8px 16px;
+                border-radius:10px;
+                border:1px solid #A7F3D0;
+                margin-bottom:14px;
+            ">Matched Skills</div>
+            <div style="font-size:13px;color:#6B7280;margin-bottom:14px;font-weight:500;">
+                Skills already present in the resume
+            </div>
+            <div style="line-height:2.2;">
+                {matched_chips_html}
+            </div>
+            <div style="
+                margin-top:16px;
+                padding-top:12px;
+                border-top:1px solid #E5E7EB;
+                color:#065F46;
+                font-size:13px;
+                font-weight:700;
+            ">✓ {matched_count} required skills matched</div>
+        </div>
+
+        <div class="skills-container">
+            <div style="
+                display:inline-block;
+                background-color:#FEF2F2;
+                color:#991B1B;
+                font-size:14px;
+                font-weight:700;
+                padding:8px 16px;
+                border-radius:10px;
+                border:1px solid #FECACA;
+                margin-bottom:14px;
+            ">Missing Skills</div>
+            <div style="font-size:13px;color:#6B7280;margin-bottom:14px;font-weight:500;">
+                Skills that could improve the match
+            </div>
+            <div style="line-height:2.2;">
+                {missing_chips_html}
+            </div>
+            <div style="
+                margin-top:16px;
+                padding-top:12px;
+                border-top:1px solid #E5E7EB;
+                color:#991B1B;
+                font-size:13px;
+                font-weight:700;
+            ">+ {missing_count} skills could improve the match</div>
+        </div>
+
+    </div>
+
+    <!-- SKILL COVERAGE PROGRESS -->
+    <div class="analytics-card">
+        <div style="font-size:16px;font-weight:800;color:#0A1628;margin-bottom:5px;">
+            Skill Coverage Progress
+        </div>
+        <div style="font-size:13px;color:#64748B;margin-bottom:16px;font-weight:500;">
+            Percentage of required job skills found in the candidate's resume.
+        </div>
+        <div style="
+            background:#DBEAFE;
+            border-radius:999px;
+            height:14px;
+            overflow:hidden;
+            margin-bottom:12px;
+        ">
+            <div style="
+                background-color:#0077B6;
+                height:100%;
+                width:{percentage}%;
+                border-radius:999px;
+            "></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="color:#065F46;font-size:13px;font-weight:700;">✓ {matched_count} matched</span>
+            <span style="
+                color:#0077B6;
+                font-size:18px;
+                font-weight:900;
+                letter-spacing:-0.5px;
+            ">{percentage}%</span>
+            <span style="color:#991B1B;font-size:13px;font-weight:700;">{missing_count} missing ✗</span>
+        </div>
+    </div>
+    """)
 
 def show_dashboard(result):
 
@@ -95,14 +363,14 @@ def show_dashboard(result):
             font-size:11px;font-weight:700;color:#6366F1;
             text-transform:uppercase;letter-spacing:1.5px;
             margin-bottom:4px;
-        ">🎯 ATS Match Score</div>
+        ">ATS Match Score</div>
         """)
         score_gauge(score)
 
     with right:
         st.html(f"""
         <div style="
-            background: linear-gradient(135deg, #0D5C9E 0%, #1570BF 45%, #1976D2 100%) !important;
+            background-color: #1E293B !important;
             border-radius: 24px;
             padding: 32px;
             min-height: 180px;
@@ -122,7 +390,7 @@ def show_dashboard(result):
 
             <div style="color:rgba(255,255,255,0.5) !important;font-size:11px;font-weight:700;
                 text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;
-                position:relative;z-index:1;">🏆 RECRUITER VERDICT</div>
+                position:relative;z-index:1;">RECRUITER VERDICT</div>
 
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:6px;
                 position:relative;z-index:1;">
@@ -193,12 +461,12 @@ def show_dashboard(result):
 
     st.html(f"""
     <div style="font-size:22px;font-weight:800;color:#0F172A;
-        letter-spacing:-0.5px;margin-bottom:20px;">👤 Candidate Overview</div>
+        letter-spacing:-0.5px;margin-bottom:20px;">Candidate Overview</div>
 
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:8px;">
 
         <div class="metric-card">
-            <div class="metric-label">🎓 Education</div>
+            <div class="metric-label">Education</div>
             <div class="metric-value" style="font-size:22px;letter-spacing:-0.5px;">
                 {str(candidate_degree).upper()}
             </div>
@@ -206,19 +474,19 @@ def show_dashboard(result):
         </div>
 
         <div class="metric-card">
-            <div class="metric-label">💼 Experience</div>
+            <div class="metric-label">Experience</div>
             <div class="metric-value">{candidate_experience}</div>
             <div class="metric-description">Years &nbsp;·&nbsp; Required: {required_experience} yrs</div>
         </div>
 
         <div class="metric-card">
-            <div class="metric-label">🛠 Skills Matched</div>
+            <div class="metric-label">Skills Matched</div>
             <div class="metric-value">{len(matched_skills)}/{len(required_skills)}</div>
             <div class="metric-description">Required skills matched</div>
         </div>
 
         <div class="metric-card">
-            <div class="metric-label">📜 Certifications</div>
+            <div class="metric-label">Certifications</div>
             <div class="metric-value">{len(candidate_certifications)}</div>
             <div class="metric-description">Required: {len(required_certifications)}</div>
         </div>
@@ -237,7 +505,7 @@ def show_dashboard(result):
     # ======================================================
 
     st.divider()
-    st.subheader("🎓 Qualification Analysis")
+    st.subheader("Qualification Analysis")
 
     col1, col2, col3 = st.columns(3, gap="medium")
 
@@ -247,14 +515,14 @@ def show_dashboard(result):
 
     with col1:
         with st.container(border=True):
-            st.markdown("### 🎓 Education")
+            st.markdown("### Education")
             st.write(f"**Candidate:** {str(candidate_degree).upper()}")
             st.write(f"**Required:** {str(required_degree).upper()}")
             st.divider()
             if education_match_score >= 1:
-                st.success("✅ Education requirement satisfied")
+                st.success("Education requirement satisfied")
             else:
-                st.error("❌ Education requirement not satisfied")
+                st.error("Education requirement not satisfied")
 
     # --------------------------------------------------
     # EXPERIENCE
@@ -262,16 +530,16 @@ def show_dashboard(result):
 
     with col2:
         with st.container(border=True):
-            st.markdown("### 💼 Experience")
+            st.markdown("### Experience")
             st.write(f"**Candidate:** {candidate_experience} Years")
             st.write(f"**Required:** {required_experience} Years")
             st.divider()
             if required_experience <= 0:
-                st.info("ℹ️ Experience not specified")
+                st.info("Experience not specified")
             elif candidate_experience >= required_experience:
-                st.success("✅ Experience requirement satisfied")
+                st.success("Experience requirement satisfied")
             else:
-                st.error("❌ Experience requirement not satisfied")
+                st.error("Experience requirement not satisfied")
 
     # --------------------------------------------------
     # CERTIFICATIONS
@@ -279,21 +547,21 @@ def show_dashboard(result):
 
     with col3:
         with st.container(border=True):
-            st.markdown("### 📜 Certifications")
+            st.markdown("### Certifications")
             st.write("**Candidate:**")
             st.write(", ".join(candidate_certifications) if candidate_certifications else "None")
             st.write("**Required:**")
             st.write(", ".join(required_certifications) if required_certifications else "None")
             st.divider()
             if certification_match_score >= 1:
-                st.success("✅ Certification requirement satisfied")
+                st.success("Certification requirement satisfied")
             elif certification_match_score > 0:
-                st.warning("⚠️ Partial certification match")
+                st.warning("Partial certification match")
             else:
                 if required_certifications:
-                    st.error("❌ Required certifications missing")
+                    st.error("Required certifications missing")
                 else:
-                    st.info("ℹ️ Certifications not required")
+                    st.info("Certifications not required")
 
     # ======================================================
     # MATCH QUALITY ANALYSIS — single HTML block
@@ -320,13 +588,13 @@ def show_dashboard(result):
 
     st.html(f"""
     <div style="font-size:22px;font-weight:800;color:#0F172A;
-        letter-spacing:-0.5px;margin-bottom:20px;">🔍 Match Quality Analysis</div>
+        letter-spacing:-0.5px;margin-bottom:20px;">Match Quality Analysis</div>
 
     <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:14px;">
 
         <!-- SKILLS -->
         <div class="metric-card" style="text-align:center;">
-            <div class="metric-label" style="margin-bottom:10px;">🛠 Skill Match</div>
+            <div class="metric-label" style="margin-bottom:10px;">Skill Match</div>
             <div style="font-size:28px;font-weight:900;color:{_bar_color(skill_match_score)};
                 letter-spacing:-1px;">{skill_match_score*100:.0f}%</div>
             <div style="margin-top:10px;">{_skill_badge(skill_status)}</div>
@@ -334,7 +602,7 @@ def show_dashboard(result):
 
         <!-- EDUCATION -->
         <div class="metric-card" style="text-align:center;">
-            <div class="metric-label" style="margin-bottom:10px;">🎓 Education</div>
+            <div class="metric-label" style="margin-bottom:10px;">Education</div>
             <div style="font-size:28px;font-weight:900;color:{_bar_color(education_match_score)};
                 letter-spacing:-1px;">{education_match_score*100:.0f}%</div>
             <div style="margin-top:10px;font-size:12px;color:#6B7280;font-weight:600;">
@@ -344,7 +612,7 @@ def show_dashboard(result):
 
         <!-- EXPERIENCE -->
         <div class="metric-card" style="text-align:center;">
-            <div class="metric-label" style="margin-bottom:10px;">💼 Experience</div>
+            <div class="metric-label" style="margin-bottom:10px;">Experience</div>
             <div style="font-size:28px;font-weight:900;color:{_bar_color(experience_match_score)};
                 letter-spacing:-1px;">{experience_match_score*100:.0f}%</div>
             <div style="margin-top:10px;font-size:12px;color:#6B7280;font-weight:600;">
@@ -354,7 +622,7 @@ def show_dashboard(result):
 
         <!-- CERTIFICATION -->
         <div class="metric-card" style="text-align:center;">
-            <div class="metric-label" style="margin-bottom:10px;">📜 Certification</div>
+            <div class="metric-label" style="margin-bottom:10px;">Certification</div>
             <div style="font-size:28px;font-weight:900;color:{_bar_color(certification_match_score)};
                 letter-spacing:-1px;">{certification_match_score*100:.0f}%</div>
             <div style="margin-top:10px;font-size:12px;color:#6B7280;font-weight:600;">
@@ -364,7 +632,7 @@ def show_dashboard(result):
 
         <!-- SEMANTIC -->
         <div class="metric-card" style="text-align:center;">
-            <div class="metric-label" style="margin-bottom:10px;">🧠 Semantic</div>
+            <div class="metric-label" style="margin-bottom:10px;">Semantic</div>
             <div style="font-size:28px;font-weight:900;color:{_bar_color(semantic_similarity)};
                 letter-spacing:-1px;">{semantic_similarity*100:.0f}%</div>
             <div style="margin-top:10px;font-size:12px;color:#6B7280;font-weight:600;">
@@ -386,19 +654,19 @@ def show_dashboard(result):
 
     st.html(f"""
     <div style="font-size:22px;font-weight:800;color:#0A1628;
-        letter-spacing:-0.5px;margin-bottom:20px;">🧠 NLP Similarity Analysis</div>
+        letter-spacing:-0.5px;margin-bottom:20px;">NLP Similarity Analysis</div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
 
         <div class="analytics-card">
             <div style="font-size:16px;font-weight:700;color:#0A1628;margin-bottom:4px;">
-                📝 TF-IDF Similarity
+                TF-IDF Similarity
             </div>
             <div style="font-size:13px;color:#64748B;margin-bottom:16px;font-weight:500;">
                 Lexical overlap between resume and job description.
             </div>
             <div style="background:#DBEAFE;border-radius:999px;height:12px;overflow:hidden;margin-bottom:10px;">
-                <div style="background:linear-gradient(90deg,#0077B6,#00B4D8);
+                <div style="background-color:#0077B6;
                     height:100%;width:{tfidf_pct*100:.1f}%;border-radius:999px;"></div>
             </div>
             <div style="font-size:22px;font-weight:800;color:#0077B6;letter-spacing:-0.5px;">
@@ -408,13 +676,13 @@ def show_dashboard(result):
 
         <div class="analytics-card">
             <div style="font-size:16px;font-weight:700;color:#0A1628;margin-bottom:4px;">
-                🧠 Sentence-BERT Similarity
+                Sentence-BERT Similarity
             </div>
             <div style="font-size:13px;color:#64748B;margin-bottom:16px;font-weight:500;">
                 Deep semantic similarity via transformer embeddings.
             </div>
             <div style="background:#DBEAFE;border-radius:999px;height:12px;overflow:hidden;margin-bottom:10px;">
-                <div style="background:linear-gradient(90deg,#0096C7,#00B4D8);
+                <div style="background-color:#0096C7;
                     height:100%;width:{sbert_pct*100:.1f}%;border-radius:999px;"></div>
             </div>
             <div style="font-size:22px;font-weight:800;color:#0096C7;letter-spacing:-0.5px;">
@@ -430,7 +698,7 @@ def show_dashboard(result):
     # ======================================================
 
     st.divider()
-    st.subheader("📊 Model Feature Importance")
+    st.subheader("Model Feature Importance")
 
     st.caption(
         "Importance calculated directly from the trained Random Forest model."
@@ -448,20 +716,20 @@ def show_dashboard(result):
             })
 
             feature_names = {
-                "tfidf_similarity":         "📝 TF-IDF Similarity",
-                "semantic_similarity":      "🧠 Semantic Similarity",
-                "skill_match_score":        "🛠 Skill Match",
-                "education_match_score":    "🎓 Education Match",
-                "experience_match_score":   "💼 Experience Match",
-                "certification_match_score":"📜 Certification Match",
-                "resume_length":            "📄 Resume Length",
-                "job_length":               "📑 Job Length",
-                "resume_word_count":        "📄 Resume Word Count",
-                "job_word_count":           "📑 Job Word Count",
-                "candidate_skill_count":    "🛠 Candidate Skill Count",
-                "required_skill_count":     "📋 Required Skill Count",
-                "skill_overlap_count":      "✅ Skill Overlap Count",
-                "education_exact_match":    "🎓 Exact Education Match",
+                "tfidf_similarity":         "TF-IDF Similarity",
+                "semantic_similarity":      "Semantic Similarity",
+                "skill_match_score":        "Skill Match",
+                "education_match_score":    "Education Match",
+                "experience_match_score":   "Experience Match",
+                "certification_match_score":"Certification Match",
+                "resume_length":            "Resume Length",
+                "job_length":               "Job Length",
+                "resume_word_count":        "Resume Word Count",
+                "job_word_count":           "Job Word Count",
+                "candidate_skill_count":    "Candidate Skill Count",
+                "required_skill_count":     "Required Skill Count",
+                "skill_overlap_count":      "Skill Overlap Count",
+                "education_exact_match":    "Exact Education Match",
             }
 
             importance_df["Feature"] = (
@@ -525,7 +793,7 @@ def show_dashboard(result):
                 config={"displaylogo": False},
             )
 
-            with st.expander("🔍 View Raw Feature Importance Values"):
+            with st.expander("View Raw Feature Importance Values"):
                 display_df = importance_df.copy()
                 display_df["Importance"] = (
                     display_df["Importance"].round(2).astype(str) + "%"
@@ -537,6 +805,123 @@ def show_dashboard(result):
 
     else:
         st.warning("The loaded model does not expose `feature_importances_`.")
+
+    # ======================================================
+    # WHY THIS SCORE? (LOCAL SHAP)
+    # ======================================================
+
+    st.divider()
+    st.html("""
+    <div style="font-size:22px;font-weight:800;color:#0F172A;
+        letter-spacing:-0.5px;margin-bottom:8px;">Why this score? (Explainable AI)</div>
+    <div style="font-size:14px;color:#64748B;font-weight:500;margin-bottom:20px;">
+        Understand exactly how each feature influenced the final ATS score for this specific candidate.
+    </div>
+    """)
+
+    with st.spinner("Generating AI explanation..."):
+        try:
+            import numpy as np
+            explainer = get_shap_explainer()
+            X = pd.DataFrame([features], columns=FEATURE_COLUMNS)
+            X_scaled = scaler.transform(X)
+            
+            shap_values = explainer.shap_values(X_scaled)
+            if isinstance(shap_values, list):
+                shap_values = shap_values[0]
+            shap_values = np.asarray(shap_values).flatten()
+            
+            expected_value = explainer.expected_value
+            if isinstance(expected_value, (list, np.ndarray)):
+                expected_value = float(expected_value[0])
+                
+            feature_names = {
+                "tfidf_similarity":         "Keyword Overlap (TF-IDF)",
+                "semantic_similarity":      "Meaning Similarity (SBERT)",
+                "skill_match_score":        "Skill Match",
+                "education_match_score":    "Education Match",
+                "experience_match_score":   "Experience Match",
+                "certification_match_score":"Certification Match",
+                "resume_length":            "Resume Length",
+                "job_length":               "Job Length",
+                "resume_word_count":        "Resume Word Count",
+                "job_word_count":           "Job Word Count",
+                "candidate_skill_count":    "Candidate Skill Count",
+                "required_skill_count":     "Required Skill Count",
+                "skill_overlap_count":      "Skill Overlap Count",
+                "education_exact_match":    "Exact Education Match",
+            }
+
+            contributions = []
+            for i, feature in enumerate(FEATURE_COLUMNS):
+                display_name = feature_names.get(feature, feature)
+                shap_val = float(shap_values[i])
+                contributions.append({
+                    "Feature": display_name,
+                    "Value": round(float(features[feature]), 4),
+                    "Impact": shap_val,
+                    "Direction": "Positive" if shap_val > 0 else "Negative" if shap_val < 0 else "Neutral"
+                })
+                
+            contributions.sort(key=lambda x: abs(x["Impact"]), reverse=True)
+            
+            pos_html = ""
+            neg_html = ""
+            
+            for c in contributions:
+                if c["Impact"] == 0: continue
+                impact_pct = c["Impact"] * 100
+                color = "#10B981" if impact_pct > 0 else "#EF4444"
+                sign = "+" if impact_pct > 0 else ""
+                row = f'''
+                <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F1F5F9;">
+                    <div style="font-size:13px;color:#475569;font-weight:600;">{c["Feature"]} <span style="color:#94A3B8;font-weight:400;margin-left:6px;">(value: {c["Value"]})</span></div>
+                    <div style="font-size:13px;color:{color};font-weight:800;">{sign}{impact_pct:.2f}%</div>
+                </div>
+                '''
+                if impact_pct > 0:
+                    pos_html += row
+                else:
+                    neg_html += row
+                    
+            st.html(f'''
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:20px;">
+                    <div style="font-size:14px;font-weight:800;color:#0F172A;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                        <span style="color:#10B981;font-size:18px;">+</span> Factors Increasing Score
+                    </div>
+                    {pos_html or '<div style="font-size:13px;color:#94A3B8;">No significant positive factors.</div>'}
+                </div>
+                <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:16px;padding:20px;">
+                    <div style="font-size:14px;font-weight:800;color:#0F172A;margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+                        <span style="color:#EF4444;font-size:18px;">−</span> Factors Decreasing Score
+                    </div>
+                    {neg_html or '<div style="font-size:13px;color:#94A3B8;">No significant negative factors.</div>'}
+                </div>
+            </div>
+            <div style="margin-top:16px;font-size:13px;color:#64748B;font-weight:500;text-align:center;">
+                Base model expectation: <span style="font-weight:700;color:#0F172A;">{expected_value*100:.1f}%</span>
+            </div>
+            ''')
+            
+            with st.expander("View SHAP Waterfall Chart"):
+                import shap
+                import matplotlib.pyplot as plt
+                
+                fig, ax = plt.subplots(figsize=(10, 6))
+                explanation = shap.Explanation(
+                    values=shap_values,
+                    base_values=expected_value,
+                    data=X_scaled[0],
+                    feature_names=[feature_names.get(f, f) for f in FEATURE_COLUMNS]
+                )
+                shap.plots.waterfall(explanation, max_display=10, show=False)
+                plt.tight_layout()
+                st.pyplot(fig)
+                plt.close(fig)
+                
+        except Exception as e:
+            st.warning(f"Could not generate SHAP explanation: {e}")
 
     # ======================================================
     # AI SUGGESTIONS
@@ -553,12 +938,11 @@ def show_dashboard(result):
         <div style="
             display:flex;align-items:flex-start;gap:12px;
             padding:12px 16px;
-            background:linear-gradient(135deg,#EFF6FF,#EDE9FE);
+            background-color:#EFF6FF;
             border:1px solid #C7D2FE;
             border-radius:12px;
             margin-bottom:10px;
         ">
-            <span style="font-size:18px;margin-top:1px;">📚</span>
             <div>
                 <div style="font-size:14px;font-weight:700;color:#1E40AF;">
                     Learn <strong>{skill.title()}</strong>
@@ -575,12 +959,11 @@ def show_dashboard(result):
         <div style="
             display:flex;align-items:flex-start;gap:12px;
             padding:12px 16px;
-            background:linear-gradient(135deg,#FFFBEB,#FEF3C7);
+            background-color:#FFFBEB;
             border:1px solid #FDE68A;
             border-radius:12px;
             margin-bottom:10px;
         ">
-            <span style="font-size:18px;margin-top:1px;">💼</span>
             <div>
                 <div style="font-size:14px;font-weight:700;color:#92400E;">
                     Gain More Experience
@@ -597,12 +980,11 @@ def show_dashboard(result):
         <div style="
             display:flex;align-items:flex-start;gap:12px;
             padding:12px 16px;
-            background:linear-gradient(135deg,#F0FDF4,#DCFCE7);
+            background-color:#F0FDF4;
             border:1px solid #BBF7D0;
             border-radius:12px;
             margin-bottom:10px;
         ">
-            <span style="font-size:18px;margin-top:1px;">📜</span>
             <div>
                 <div style="font-size:14px;font-weight:700;color:#065F46;">
                     Add Industry Certifications
@@ -624,7 +1006,6 @@ def show_dashboard(result):
         border-radius:12px;
         margin-bottom:10px;
     ">
-        <span style="font-size:18px;margin-top:1px;">📄</span>
         <div style="font-size:14px;font-weight:600;color:#374151;">
             Keep resume concise — ideally 1–2 pages
         </div>
@@ -637,7 +1018,6 @@ def show_dashboard(result):
         border-radius:12px;
         margin-bottom:10px;
     ">
-        <span style="font-size:18px;margin-top:1px;">🔗</span>
         <div style="font-size:14px;font-weight:600;color:#374151;">
             Include GitHub and LinkedIn profile links
         </div>
@@ -647,18 +1027,18 @@ def show_dashboard(result):
         no_gaps_banner = """
         <div style="
             padding:16px 20px;
-            background:linear-gradient(135deg,#ECFDF5,#D1FAE5);
+            background-color:#ECFDF5;
             border:1px solid #6EE7B7;
             border-radius:14px;
             margin-bottom:16px;
             font-size:15px;font-weight:700;color:#065F46;
-        ">🎉 Excellent! No major improvement gaps detected.</div>"""
+        ">Excellent! No major improvement gaps detected.</div>"""
     else:
         no_gaps_banner = ""
 
     st.html(f"""
     <div style="font-size:22px;font-weight:800;color:#0F172A;
-        letter-spacing:-0.5px;margin-bottom:20px;">💡 AI Resume Suggestions</div>
+        letter-spacing:-0.5px;margin-bottom:20px;">AI Resume Suggestions</div>
 
     <div style="
         background:#FFFFFF;
@@ -678,7 +1058,7 @@ def show_dashboard(result):
 
     st.divider()
 
-    with st.expander("🔍 View Raw Feature Values"):
+    with st.expander("View Raw Feature Values"):
 
         raw_df = pd.DataFrame({
             "Feature": list(features.keys()),
@@ -692,14 +1072,14 @@ def show_dashboard(result):
     # ======================================================
 
     st.divider()
-    st.subheader("📄 ATS Report")
+    st.subheader("ATS Report")
 
     pdf_file = generate_pdf(result)
 
     with open(pdf_file, "rb") as f:
 
         st.download_button(
-            label="📄  Download Professional ATS Report",
+            label="Download Professional ATS Report",
             data=f,
             file_name="ATS_Report.pdf",
             mime="application/pdf",

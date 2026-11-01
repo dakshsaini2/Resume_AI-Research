@@ -35,7 +35,7 @@ def apply_styles():
         ===================================================== */
 
         .stApp {
-            background: linear-gradient(160deg, #E8F1F8 0%, #F0F8FF 40%, #EBF5FB 70%, #F5FAFF 100%) !important;
+            background-color: #F8FAFC !important;
             min-height: 100vh;
         }
 
@@ -99,8 +99,8 @@ def apply_styles():
         ===================================================== */
 
         [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #071B2F 0%, #0A2744 55%, #071B2F 100%) !important;
-            border-right: none !important;
+            background-color: #0F172A !important;
+            border-right: 1px solid #1E293B !important;
         }
 
         [data-testid="stSidebar"] p,
@@ -165,7 +165,7 @@ def apply_styles():
             position: absolute;
             top: 0; left: 0; right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #0077B6, #00B4D8);
+            background-color: #0077B6;
             border-radius: 20px 20px 0 0;
         }
 
@@ -204,8 +204,7 @@ def apply_styles():
            SCORE CARD
         ===================================================== */
 
-        .score-card {
-            background: linear-gradient(135deg, #FFFFFF 0%, #EBF5FB 100%);
+            background-color: #FFFFFF;
             border: 1px solid rgba(0, 119, 182, 0.15);
             border-radius: 24px;
             padding: 30px;
@@ -226,7 +225,7 @@ def apply_styles():
         ===================================================== */
 
         .verdict-card {
-            background: linear-gradient(135deg, #0D5C9E 0%, #1570BF 45%, #1976D2 100%) !important;
+            background-color: #1E293B !important;
             border-radius: 24px;
             padding: 32px;
             min-height: 180px;
@@ -307,13 +306,13 @@ def apply_styles():
         }
 
         .skill-match {
-            background: linear-gradient(135deg, #ECFDF5, #D1FAE5);
+            background-color: #ECFDF5;
             color: #065F46;
             border: 1px solid #A7F3D0;
         }
 
         .skill-missing {
-            background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+            background-color: #FEF2F2;
             color: #991B1B;
             border: 1px solid #FECACA;
         }
@@ -336,8 +335,7 @@ def apply_styles():
 
         .stButton > button {
             border-radius: 16px !important;
-            border: none !important;
-            background: linear-gradient(135deg, #0066A1 0%, #0088CC 50%, #00A3E0 100%) !important;
+            background-color: #0077B6 !important;
             color: white !important;
             font-weight: 700 !important;
             font-size: 16px !important;
@@ -356,8 +354,7 @@ def apply_styles():
             transform: translateY(-3px) !important;
             box-shadow:
                 0 16px 40px rgba(0, 119, 182, 0.4),
-                0 0 20px rgba(0, 180, 216, 0.15) !important;
-            background: linear-gradient(135deg, #005A8F 0%, #0077B6 50%, #0096C7 100%) !important;
+            background-color: #005A8F !important;
         }
 
         .stButton > button:active {
@@ -376,8 +373,7 @@ def apply_styles():
         ===================================================== */
 
         .stDownloadButton > button {
-            border-radius: 16px !important;
-            background: linear-gradient(135deg, #0066A1 0%, #0088CC 50%, #00A3E0 100%) !important;
+            background-color: #0077B6 !important;
             color: #FFFFFF !important;
             border: none !important;
             font-weight: 700 !important;
@@ -423,9 +419,8 @@ def apply_styles():
             box-shadow: 0 8px 32px rgba(0, 119, 182, 0.1) !important;
         }
 
-        /* Inner Dropzone Area */
         [data-testid="stFileUploaderDropzone"] {
-            background: linear-gradient(135deg, rgba(232, 244, 253, 0.8), rgba(240, 248, 255, 0.6)) !important;
+            background-color: #F1F5F9 !important;
             border-radius: 16px !important;
             padding: 28px !important;
             transition: background 0.3s ease !important;
@@ -441,9 +436,8 @@ def apply_styles():
             font-weight: 600 !important;
         }
 
-        /* Browse Files Button */
         [data-testid="stFileUploaderDropzone"] button {
-            background: linear-gradient(135deg, #0077B6, #0096C7) !important;
+            background-color: #0077B6 !important;
             color: #FFFFFF !important;
             border: none !important;
             border-radius: 12px !important;
@@ -498,9 +492,8 @@ def apply_styles():
             background: rgba(255, 255, 255, 0.7) !important;
         }
 
-        /* Restore the dropzone bg */
         [data-testid="stFileUploaderDropzone"] {
-            background: linear-gradient(135deg, rgba(232, 244, 253, 0.8), rgba(240, 248, 255, 0.6)) !important;
+            background-color: #F1F5F9 !important;
         }
 
         /* Text & Details Inside Uploaded File Chip */
@@ -602,7 +595,7 @@ def apply_styles():
         ===================================================== */
 
         [data-testid="stProgress"] > div > div {
-            background: linear-gradient(90deg, #0077B6, #00B4D8) !important;
+            background-color: #0077B6 !important;
             border-radius: 999px !important;
         }
 
